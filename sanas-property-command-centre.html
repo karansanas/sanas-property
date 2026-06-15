@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0B0B14"/>
+<title>Sanas Property Command Centre</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0B0B14;
+    --surface: #13131F;
+    --surface2: #1C1C2E;
+    --border: #252538;
+    --text: #E8E8F4;
+    --muted: #6B6B8A;
+    --purple: #7C6EFA;
+    --green: #00D9A5;
+    --red: #FF4D6D;
+    --amber: #FFB830;
+    --blue: #3D9EFF;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(160deg, #13131F 0%, #0B0B14 100%);
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--purple); font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 700; color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .header-date { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .header-alert {
+    margin-top: 10px;
+    background: #FF4D6D18;
+    border: 1px solid #FF4D6D44;
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 12px; color: var(--red); font-weight: 700;
+    display: none;
+  }
+  .header-alert.show { display: block; }
+
+  /* TABS */
+  .tabs {
+    display: flex; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 90px; z-index: 99;
+  }
+  .tab {
+    flex: 1; padding: 10px 4px 8px;
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted); font-size: 9px;
+    font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .tab.active { border-bottom-color: var(--purple); color: var(--purple); }
+  .tab-icon { font-size: 16px; display: block; margin-bottom: 2px; }
+
+  /* CONTENT */
+  .content { padding: 14px 14px 80px; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+    margin-bottom: 10px;
+  }
+  .card.urgent { border-color: #FF4D6D44; background: #FF4D6D08; }
+  .card.ok { border-color: #00D9A544; }
+
+  /* GRID */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+
+  /* STAT CARD */
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+  }
+  .stat-label { font-size: 10px; color: var(--muted); letter-spacing: 1px; font-weight: 700; }
+  .stat-value { font-size: 22px; font-weight: 900; margin-top: 4px; font-family: 'Space Grotesk', sans-serif; }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* CASHFLOW HERO */
+  .cashflow-hero {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 16px;
+    margin-bottom: 12px; text-align: center;
+  }
+  .cashflow-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; font-weight: 700; }
+  .cashflow-value {
+    font-size: 36px; font-weight: 900;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 6px 0 4px; letter-spacing: -1px;
+  }
+  .cashflow-sub { font-size: 12px; color: var(--muted); }
+  .cashflow-row {
+    display: flex; justify-content: space-between;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .cashflow-item { text-align: center; }
+  .cashflow-item-label { font-size: 10px; color: var(--muted); }
+  .cashflow-item-val { font-size: 14px; font-weight: 800; margin-top: 2px; font-family: 'Space Grotesk', sans-serif; }
+
+  /* ITEM ROW */
+  .item-row {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+  .item-row.urgent { border-color: #FF4D6D55; background: #FF4D6D06; }
+  .item-row.confirmed { border-color: #00D9A533; }
+  .item-left { flex: 1; }
+  .item-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .item-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .item-right { text-align: right; }
+  .item-amount { font-size: 15px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; }
+  .item-status { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; margin-top: 3px; }
+
+  /* COUNTDOWN BAR */
+  .countdown-wrap { margin-top: 10px; }
+  .countdown-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .countdown-label { font-size: 11px; font-weight: 700; }
+  .countdown-next { font-size: 11px; color: var(--muted); }
+  .bar-bg { background: #1C1C2E; border-radius: 4px; height: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+  /* BUTTONS */
+  .btn {
+    border: none; border-radius: 8px; padding: 8px 14px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .btn-confirm { background: var(--green); color: #000; }
+  .btn-outline-green { background: transparent; border: 1px solid var(--green); color: var(--green); }
+  .btn-outline-red { background: transparent; border: 1px solid var(--red); color: var(--red); }
+  .btn-outline-purple { background: transparent; border: 1px solid var(--purple); color: var(--purple); }
+  .btn-confirmed { background: #00D9A522; border: 1px solid var(--green); color: var(--green); }
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+
+  /* LOAN BALANCE */
+  .balance-input {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px;
+    color: var(--text); font-size: 13px; font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    width: 130px; text-align: right;
+  }
+  .balance-input:focus { outline: none; border-color: var(--purple); }
+
+  /* SECTION HEADER */
+  .section-header {
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 2px; font-weight: 700;
+    margin-bottom: 10px; margin-top: 4px;
+  }
+
+  /* FUTURE POTENTIAL */
+  .potential-card {
+    background: linear-gradient(135deg, #7C6EFA11, #00D9A508);
+    border: 1px solid #7C6EFA33;
+    border-radius: 14px; padding: 14px; margin-bottom: 10px;
+  }
+  .potential-row {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 6px 0;
+  }
+  .potential-divider { border: none; border-top: 1px solid var(--border); margin: 6px 0; }
+
+  /* ALERT ITEM */
+  .alert-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px; margin-bottom: 8px;
+  }
+  .alert-item.urgent { border-color: #FF4D6D55; background: #FF4D6D08; }
+  .alert-msg { font-size: 13px; font-weight: 600; line-height: 1.5; }
+  .alert-msg.urgent-text { color: var(--red); }
+
+  /* VACANT BADGE */
+  .vacant-badge {
+    display: inline-block; background: #FFB83020;
+    border: 1px solid #FFB83050; border-radius: 6px;
+    padding: 2px 8px; font-size: 10px;
+    color: var(--amber); font-weight: 700; letter-spacing: 0.5px;
+  }
+
+  /* MONTH SUMMARY */
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 12px;
+  }
+  .summary-cell {
+    background: var(--surface2); border-radius: 10px;
+    padding: 12px; text-align: center;
+  }
+  .summary-num { font-size: 22px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; }
+  .summary-lbl { font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: 0.5px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green); color: #000;
+    padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+    transition: transform 0.3s ease; z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* NOTES */
+  .notes-area {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px;
+    color: var(--text); font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    width: 100%; resize: none; min-height: 80px;
+    margin-top: 8px;
+  }
+  .notes-area:focus { outline: none; border-color: var(--purple); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">SANAS</div>
+  <div class="header-title">Property Command Centre</div>
+  <div class="header-date" id="headerDate"></div>
+  <div class="header-alert" id="headerAlert"></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('dashboard')" id="tab-dashboard">
+    <span class="tab-icon">📊</span>Dashboard
+  </button>
+  <button class="tab" onclick="showTab('emi')" id="tab-emi">
+    <span class="tab-icon">🏦</span>EMI
+  </button>
+  <button class="tab" onclick="showTab('rent')" id="tab-rent">
+    <span class="tab-icon">🏠</span>Rent
+  </button>
+  <button class="tab" onclick="showTab('alerts')" id="tab-alerts">
+    <span class="tab-icon">🔔</span>Alerts
+  </button>
+</div>
+
+<div class="content">
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard">
+    <div class="cashflow-hero" id="cashflowHero">
+      <div class="cashflow-label">NET MONTHLY CASHFLOW</div>
+      <div class="cashflow-value" id="cfValue"></div>
+      <div class="cashflow-sub" id="cfSub"></div>
+      <div class="cashflow-row">
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">EMI OUTFLOW</div>
+          <div class="cashflow-item-val" style="color:var(--red)">₹90,619</div>
+        </div>
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">RENT INFLOW</div>
+          <div class="cashflow-item-val" style="color:var(--green)">₹41,300</div>
+        </div>
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">COVERAGE</div>
+          <div class="cashflow-item-val" style="color:var(--amber)">46%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">UPCOMING EMIs</div>
+    <div id="dashEmi"></div>
+
+    <div class="section-header" style="margin-top:14px">RENT STATUS THIS MONTH</div>
+    <div id="dashRent"></div>
+
+    <div class="section-header" style="margin-top:14px">FUTURE RENTAL POTENTIAL</div>
+    <div class="potential-card">
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Current Monthly Rent</span>
+        <span style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif">₹41,300</span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Office 512 + 513 (post possession)</span>
+        <span style="color:var(--purple);font-weight:800;font-family:'Space Grotesk',sans-serif">+₹44,000</span>
+      </div>
+      <hr class="potential-divider"/>
+      <div class="potential-row">
+        <span style="color:#fff;font-size:14px;font-weight:700">Full Potential Rent</span>
+        <span style="color:var(--amber);font-weight:900;font-size:16px;font-family:'Space Grotesk',sans-serif">₹85,300</span>
+      </div>
+      <div class="potential-row" style="margin-top:4px">
+        <span style="color:var(--muted);font-size:12px">Net cashflow after possession</span>
+        <span style="color:var(--green);font-weight:700;font-family:'Space Grotesk',sans-serif">-₹5,319</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMI -->
+  <div id="page-emi" style="display:none">
+    <div class="section-header">LOAN TRACKER — tap balance to edit</div>
+    <div id="emiCards"></div>
+    <div class="card" style="margin-top:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted);font-size:13px">Total Monthly EMI</span>
+        <span style="color:var(--red);font-weight:900;font-size:17px;font-family:'Space Grotesk',sans-serif">₹90,619</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENT -->
+  <div id="page-rent" style="display:none">
+    <div class="section-header">RENT TRACKER</div>
+    <div id="rentCards"></div>
+    <div class="card" style="margin-top:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="color:var(--muted);font-size:13px">Current Monthly Income</span>
+        <span style="color:var(--green);font-weight:900;font-size:17px;font-family:'Space Grotesk',sans-serif">₹41,300</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted);font-size:13px">After Office Possession</span>
+        <span style="color:var(--purple);font-weight:700;font-family:'Space Grotesk',sans-serif">₹85,300</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div id="page-alerts" style="display:none">
+    <div class="section-header">ACTIVE ALERTS</div>
+    <div id="alertsList"></div>
+    <div class="section-header" style="margin-top:16px">MONTH SUMMARY</div>
+    <div class="summary-grid">
+      <div class="summary-cell">
+        <div class="summary-num" id="emiConfirmedCount" style="color:var(--green)">0/4</div>
+        <div class="summary-lbl">EMIs CONFIRMED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="rentReceivedCount" style="color:var(--green)">0/3</div>
+        <div class="summary-lbl">RENTS RECEIVED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="totalOutflow" style="color:var(--red)">₹0</div>
+        <div class="summary-lbl">EMI CONFIRMED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="totalInflow" style="color:var(--green)">₹0</div>
+        <div class="summary-lbl">RENT CONFIRMED</div>
+      </div>
+    </div>
+    <div class="section-header" style="margin-top:16px">NOTES</div>
+    <textarea class="notes-area" id="notesArea" placeholder="Add notes for this month..." oninput="saveNotes()"></textarea>
+    <button class="btn btn-outline-purple" style="margin-top:8px;width:100%" onclick="resetMonth()">Reset Month Data</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const LOANS = [
+  { id:'bs', name:'Bramha Smart', dueDate:2, emi:19572, color:'#7C6EFA' },
+  { id:'gm', name:'Ganga Millennia', dueDate:5, emi:16000, color:'#00D9A5' },
+  { id:'vj', name:'VJ Highstreet', dueDate:10, emi:30000, color:'#FFB830' },
+  { id:'cl', name:'Car Loan', dueDate:10, emi:25047, color:'#FF4D6D' },
+];
+
+const TENANTS = [
+  { id:'nl', property:'Ganga Millennia', tenant:'Neelam', rent:13500, dueStart:1, dueEnd:2 },
+  { id:'py', property:'Bramha Smart', tenant:'Payal', rent:16000, dueStart:9, dueEnd:10 },
+  { id:'dt', property:'VJ Highstreet', tenant:'DTwelve', rent:11800, dueStart:10, dueEnd:11 },
+];
+
+const VACANTS = [
+  { id:'o512', property:'Office 512', expectedRent:22000 },
+  { id:'o513', property:'Office 513', expectedRent:22000 },
+];
+
+const today = new Date();
+const todayDate = today.getDate();
+const monthKey = `${today.getFullYear()}-${today.getMonth()+1}`;
+
+function ls(key, fallback) {
+  try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; }
+}
+function lsSave(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+function getDaysUntil(d) {
+  if (d >= todayDate) return d - todayDate;
+  const dim = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+  return dim - todayDate + d;
+}
+
+function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+
+function statusColor(days) {
+  if (days === 0) return '#FF4D6D';
+  if (days <= 1) return '#FF4D6D';
+  if (days <= 3) return '#FFB830';
+  return '#00D9A5';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function showTab(name) {
+  ['dashboard','emi','rent','alerts'].forEach(t => {
+    document.getElementById('page-'+t).style.display = t===name ? '' : 'none';
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+  });
+  if (name === 'alerts') renderAlerts();
+}
+
+// ── HEADER ──
+function renderHeader() {
+  document.getElementById('headerDate').textContent = today.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const alerts = buildAlerts();
+  const urgent = alerts.filter(a => a.urgent);
+  const el = document.getElementById('headerAlert');
+  if (urgent.length) {
+    el.textContent = `🔔 ${urgent.length} urgent alert${urgent.length>1?'s':''} need attention`;
+    el.classList.add('show');
+  }
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  // Cashflow
+  const cf = 41300 - 90619;
+  const cfEl = document.getElementById('cfValue');
+  cfEl.textContent = fmt(Math.abs(cf));
+  cfEl.style.color = cf >= 0 ? '#00D9A5' : '#FF4D6D';
+  document.getElementById('cfSub').textContent = cf < 0 ? 'Shortfall covered by salary / savings' : 'Positive cashflow';
+
+  // EMI mini rows
+  const emiData = ls(monthKey+'_emi', {});
+  let html = '';
+  [...LOANS].sort((a,b) => getDaysUntil(a.dueDate)-getDaysUntil(b.dueDate)).forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const sc = statusColor(days);
+    const confirmed = emiData[l.id];
+    html += `<div class="item-row ${days<=1&&!confirmed?'urgent':confirmed?'confirmed':''}">
+      <div class="item-left">
+        <div class="item-name">${l.name}</div>
+        <div class="item-sub">Due ${l.dueDate}th every month</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount" style="color:${l.color}">${fmt(l.emi)}</div>
+        <div class="item-status" style="color:${confirmed?'#00D9A5':sc}">${confirmed?'✓ CONFIRMED':days===0?'DUE TODAY':days===1?'TOMORROW':days+' DAYS'}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('dashEmi').innerHTML = html;
+
+  // Rent mini rows
+  const rentData = ls(monthKey+'_rent', {});
+  html = '';
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    const overdue = todayDate > t.dueEnd && !received;
+    html += `<div class="item-row ${overdue?'urgent':received?'confirmed':''}">
+      <div class="item-left">
+        <div class="item-name">${t.property}</div>
+        <div class="item-sub">${t.tenant} · Due ${t.dueStart}–${t.dueEnd}th</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount" style="color:#00D9A5">${fmt(t.rent)}</div>
+        <div class="item-status" style="color:${received?'#00D9A5':overdue?'#FF4D6D':'#FFB830'}">${received?'✓ RECEIVED':overdue?'OVERDUE':'PENDING'}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('dashRent').innerHTML = html;
+}
+
+// ── EMI CARDS ──
+function renderEmi() {
+  const emiData = ls(monthKey+'_emi', {});
+  const balances = ls('loan_balances', {});
+  let html = '';
+  LOANS.forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const sc = statusColor(days);
+    const confirmed = emiData[l.id];
+    const pct = Math.max(4, 100 - (days/30)*100);
+    const bal = balances[l.id] || '';
+    html += `<div class="card ${days<=1&&!confirmed?'urgent':confirmed?'ok':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#fff">${l.name}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Due ${l.dueDate}th every month</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;font-weight:900;color:${l.color};font-family:'Space Grotesk',sans-serif">${fmt(l.emi)}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;color:var(--muted)">Outstanding Balance</span>
+        <input class="balance-input" type="text" value="${bal}" placeholder="Tap to enter"
+          onchange="saveBalance('${l.id}', this.value)" onblur="saveBalance('${l.id}', this.value)"/>
+      </div>
+      <div class="countdown-wrap">
+        <div class="countdown-top">
+          <span class="countdown-label" style="color:${confirmed?'#00D9A5':sc}">${confirmed?'✓ EMI CONFIRMED':days===0?'DUE TODAY':days===1?'DUE TOMORROW':days+' DAYS AWAY'}</span>
+          <span class="countdown-next">Next: ${l.dueDate}th</span>
+        </div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${l.color}"></div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ${confirmed?'btn-confirmed':'btn-outline-green'}" style="flex:1"
+          onclick="toggleEmi('${l.id}')">
+          ${confirmed?'✓ Deducted — Tap to Undo':'Mark as Deducted'}
+        </button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('emiCards').innerHTML = html;
+}
+
+function saveBalance(id, val) {
+  const b = ls('loan_balances', {});
+  b[id] = val;
+  lsSave('loan_balances', b);
+  showToast('Balance saved');
+}
+
+function toggleEmi(id) {
+  const d = ls(monthKey+'_emi', {});
+  d[id] = !d[id];
+  lsSave(monthKey+'_emi', d);
+  renderEmi(); renderDashboard(); renderAlerts();
+  showToast(d[id] ? '✓ EMI marked as deducted' : 'Marked as pending');
+}
+
+// ── RENT CARDS ──
+function renderRent() {
+  const rentData = ls(monthKey+'_rent', {});
+  let html = '';
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    const overdue = todayDate > t.dueEnd && !received;
+    html += `<div class="card ${overdue?'urgent':received?'ok':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#fff">${t.property}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Tenant: ${t.tenant}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px">Expected: ${t.dueStart}th – ${t.dueEnd}th</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;font-weight:900;color:#00D9A5;font-family:'Space Grotesk',sans-serif">${fmt(t.rent)}</div>
+          <div style="font-size:11px;font-weight:700;margin-top:3px;color:${received?'#00D9A5':overdue?'#FF4D6D':'#FFB830'}">
+            ${received?'✓ RECEIVED':overdue?'⚠ OVERDUE':'PENDING'}
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ${received?'btn-confirmed':'btn-outline-green'}" style="flex:1" onclick="toggleRent('${t.id}','received')">
+          ${received?'✓ Received — Tap to Undo':'Mark Received'}
+        </button>
+        ${!received ? `<button class="btn btn-outline-red" style="flex:1" onclick="toggleRent('${t.id}','notreceived')">Not Received</button>` : ''}
+      </div>
+    </div>`;
+  });
+
+  // Vacant
+  html += `<div class="section-header" style="margin-top:14px">VACANT UNITS</div>`;
+  VACANTS.forEach(v => {
+    html += `<div class="card" style="opacity:0.65">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#fff">${v.property}</div>
+          <div style="margin-top:4px"><span class="vacant-badge">VACANT · AWAITING POSSESSION</span></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:15px;font-weight:700;color:var(--purple);font-family:'Space Grotesk',sans-serif">${fmt(v.expectedRent)}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">EXPECTED</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('rentCards').innerHTML = html;
+}
+
+function toggleRent(id, action) {
+  const d = ls(monthKey+'_rent', {});
+  if (action === 'received') {
+    d[id] = !d[id];
+    showToast(d[id] ? '✓ Rent marked as received' : 'Marked as pending');
+  } else {
+    d[id] = false;
+    showToast('⚠ Marked as not received');
+  }
+  lsSave(monthKey+'_rent', d);
+  renderRent(); renderDashboard(); renderAlerts();
+}
+
+// ── ALERTS ──
+function buildAlerts() {
+  const alerts = [];
+  const emiData = ls(monthKey+'_emi', {});
+  const rentData = ls(monthKey+'_rent', {});
+
+  LOANS.forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const confirmed = emiData[l.id];
+    if (!confirmed) {
+      if (days === 0) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI of ${fmt(l.emi)} is DUE TODAY!`, urgent:true, loanId:l.id });
+      else if (days === 1) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI due TOMORROW — ensure funds in account.`, urgent:true, loanId:l.id });
+      else if (days === 3) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI due in 3 days (${l.dueDate}th).`, urgent:false });
+    }
+    if (todayDate === l.dueDate + 1 && !confirmed) {
+      alerts.push({ type:'check', msg:`✅ Confirm: Was ${l.name} EMI deducted yesterday?`, urgent:true, loanId:l.id });
+    }
+  });
+
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    if (!received) {
+      if (todayDate > t.dueEnd && todayDate <= t.dueEnd + 5) {
+        alerts.push({ type:'rent', msg:`🏠 ${t.tenant} (${t.property}) rent NOT received — follow up now!`, urgent:true });
+      } else if (getDaysUntil(t.dueStart) <= 2) {
+        alerts.push({ type:'rent', msg:`🏠 ${t.tenant}'s rent due in ${getDaysUntil(t.dueStart)} day(s).`, urgent:false });
+      }
+    }
+  });
+
+  return alerts;
+}
+
+function renderAlerts() {
+  const alerts = buildAlerts();
+  const emiData = ls(monthKey+'_emi', {});
+  const rentData = ls(monthKey+'_rent', {});
+
+  let html = '';
+  if (alerts.length === 0) {
+    html = `<div style="text-align:center;padding:40px 20px">
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="font-size:16px;font-weight:700;color:var(--muted)">All clear!</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">No alerts right now.</div>
+    </div>`;
+  } else {
+    alerts.forEach((a, i) => {
+      html += `<div class="alert-item ${a.urgent?'urgent':''}">
+        <div class="alert-msg ${a.urgent?'urgent-text':''}">${a.msg}</div>
+        ${a.loanId ? `<button class="btn btn-outline-green" style="margin-top:10px" onclick="toggleEmi('${a.loanId}');renderAlerts()">✓ Confirm Deducted</button>` : ''}
+      </div>`;
+    });
+  }
+  document.getElementById('alertsList').innerHTML = html;
+
+  // Summary counts
+  const emiConf = LOANS.filter(l => emiData[l.id]).length;
+  const rentRecv = TENANTS.filter(t => rentData[t.id]).length;
+  const outflow = LOANS.filter(l => emiData[l.id]).reduce((s,l) => s+l.emi, 0);
+  const inflow = TENANTS.filter(t => rentData[t.id]).reduce((s,t) => s+t.rent, 0);
+
+  document.getElementById('emiConfirmedCount').textContent = `${emiConf}/4`;
+  document.getElementById('rentReceivedCount').textContent = `${rentRecv}/3`;
+  document.getElementById('totalOutflow').textContent = fmt(outflow);
+  document.getElementById('totalInflow').textContent = fmt(inflow);
+
+  // Notes
+  document.getElementById('notesArea').value = ls(monthKey+'_notes', '');
+}
+
+function saveNotes() {
+  lsSave(monthKey+'_notes', document.getElementById('notesArea').value);
+}
+
+function resetMonth() {
+  if (!confirm('Reset all EMI and rent data for this month?')) return;
+  lsSave(monthKey+'_emi', {});
+  lsSave(monthKey+'_rent', {});
+  lsSave(monthKey+'_notes', '');
+  renderDashboard(); renderEmi(); renderRent(); renderAlerts();
+  showToast('Month data reset');
+}
+
+// ── INIT ──
+renderHeader();
+renderDashboard();
+renderEmi();
+renderRent();
+</script>
+</body>
+</html>

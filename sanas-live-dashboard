@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0B0B14"/>
+<title>SANAS Property Command Center</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0B0B14;
+    --surface: #13131F;
+    --surface2: #1C1C2E;
+    --border: #252538;
+    --text: #E8E8F4;
+    --muted: #6B6B8A;
+    --purple: #7C6EFA;
+    --green: #00D9A5;
+    --red: #FF4D6D;
+    --amber: #FFB830;
+    --blue: #3D9EFF;
+  }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  .chrome {
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header {
+    background: linear-gradient(160deg, #13131F 0%, #0B0B14 100%);
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--purple); font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 700; color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .header-date { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .header-alert {
+    margin-top: 10px;
+    background: #FF4D6D18;
+    border: 1px solid #FF4D6D44;
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 12px; color: var(--red); font-weight: 700;
+    display: none;
+  }
+  .header-alert.show { display: block; }
+  .header-alert.sniper {
+    background: #FFB83018;
+    border-color: #FFB83055;
+    color: var(--amber);
+    cursor: pointer;
+  }
+  .tabs {
+    display: flex; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1; padding: 10px 2px 8px;
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted); font-size: 9px;
+    font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+    min-height: 44px;
+  }
+  .tab.active { border-bottom-color: var(--purple); color: var(--purple); }
+  .tab-icon { font-size: 16px; display: block; margin-bottom: 2px; }
+  .content { padding: 14px 14px 80px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+    margin-bottom: 10px;
+  }
+  .card.urgent { border-color: #FF4D6D44; background: #FF4D6D08; }
+  .card.ok { border-color: #00D9A544; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+  }
+  .stat-label { font-size: 10px; color: var(--muted); letter-spacing: 1px; font-weight: 700; }
+  .stat-value { font-size: 22px; font-weight: 900; margin-top: 4px; font-family: 'Space Grotesk', sans-serif; }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .cashflow-hero {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 16px;
+    margin-bottom: 12px; text-align: center;
+  }
+  .cashflow-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; font-weight: 700; }
+  .cashflow-value {
+    font-size: 36px; font-weight: 900;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 6px 0 4px; letter-spacing: -1px;
+  }
+  .cashflow-sub { font-size: 12px; color: var(--muted); }
+  .cashflow-row {
+    display: flex; justify-content: space-between;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .cashflow-item { text-align: center; }
+  .cashflow-item-label { font-size: 10px; color: var(--muted); }
+  .cashflow-item-val { font-size: 14px; font-weight: 800; margin-top: 2px; font-family: 'Space Grotesk', sans-serif; }
+  .item-row {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+  .item-row.urgent { border-color: #FF4D6D55; background: #FF4D6D06; }
+  .item-row.confirmed { border-color: #00D9A533; }
+  .item-left { flex: 1; }
+  .item-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .item-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .item-right { text-align: right; }
+  .item-amount { font-size: 15px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; }
+  .item-status { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; margin-top: 3px; }
+  .countdown-wrap { margin-top: 10px; }
+  .countdown-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .countdown-label { font-size: 11px; font-weight: 700; }
+  .countdown-next { font-size: 11px; color: var(--muted); }
+  .bar-bg { background: #1C1C2E; border-radius: 4px; height: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .btn {
+    border: none; border-radius: 8px; padding: 8px 14px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .btn-confirm { background: var(--green); color: #000; }
+  .btn-outline-green { background: transparent; border: 1px solid var(--green); color: var(--green); }
+  .btn-outline-red { background: transparent; border: 1px solid var(--red); color: var(--red); }
+  .btn-outline-purple { background: transparent; border: 1px solid var(--purple); color: var(--purple); }
+  .btn-confirmed { background: #00D9A522; border: 1px solid var(--green); color: var(--green); }
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+  .balance-input {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px;
+    color: var(--text); font-size: 13px; font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    width: 130px; text-align: right;
+  }
+  .balance-input:focus { outline: none; border-color: var(--purple); }
+  .section-header {
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 2px; font-weight: 700;
+    margin-bottom: 10px; margin-top: 4px;
+  }
+  .potential-card {
+    background: linear-gradient(135deg, #7C6EFA11, #00D9A508);
+    border: 1px solid #7C6EFA33;
+    border-radius: 14px; padding: 14px; margin-bottom: 10px;
+  }
+  .potential-row {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 6px 0;
+  }
+  .potential-divider { border: none; border-top: 1px solid var(--border); margin: 6px 0; }
+  .alert-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px; margin-bottom: 8px;
+  }
+  .alert-item.urgent { border-color: #FF4D6D55; background: #FF4D6D08; }
+  .alert-msg { font-size: 13px; font-weight: 600; line-height: 1.5; }
+  .alert-msg.urgent-text { color: var(--red); }
+  .vacant-badge {
+    display: inline-block; background: #FFB83020;
+    border: 1px solid #FFB83050; border-radius: 6px;
+    padding: 2px 8px; font-size: 10px;
+    color: var(--amber); font-weight: 700; letter-spacing: 0.5px;
+  }
+  .vacant-badge.open {
+    background: #00D9A518; border-color: #00D9A555; color: var(--green);
+  }
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 12px;
+  }
+  .summary-cell {
+    background: var(--surface2); border-radius: 10px;
+    padding: 12px; text-align: center;
+  }
+  .summary-num { font-size: 22px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; }
+  .summary-lbl { font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: 0.5px; }
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green); color: #000;
+    padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+    transition: transform 0.3s ease; z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .notes-area {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px;
+    color: var(--text); font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    width: 100%; resize: none; min-height: 80px;
+    margin-top: 8px;
+  }
+  .notes-area:focus { outline: none; border-color: var(--purple); }
+  .live-row { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); margin-top:4px; }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+  .live-dot.stale { background:var(--amber); }
+  .live-dot.off { background:var(--red); }
+  .slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 8px; border-radius: 8px;
+    background: var(--surface2); outline: none; margin: 14px 0 8px;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+    background: #fff; border: 3px solid var(--purple); cursor: pointer;
+  }
+  .slider::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #fff; border: 3px solid var(--purple); cursor: pointer;
+  }
+  .split-bar { display:flex; height:8px; border-radius:8px; overflow:hidden; margin-top:8px; }
+  .split-eq { background: var(--green); }
+  .split-sn { background: var(--amber); }
+</style>
+</head>
+<body>
+<div class="chrome">
+<div class="header">
+  <div class="header-eyebrow">SANAS</div>
+  <div class="header-title">Property Command Center</div>
+  <div class="header-date" id="headerDate"></div>
+  <div class="header-alert" id="headerAlert"></div>
+</div>
+<div class="tabs">
+  <button class="tab active" onclick="showTab('dashboard')" id="tab-dashboard">
+    <span class="tab-icon">📊</span>Dashboard
+  </button>
+  <button class="tab" onclick="showTab('emi')" id="tab-emi">
+    <span class="tab-icon">🏦</span>EMI
+  </button>
+  <button class="tab" onclick="showTab('rent')" id="tab-rent">
+    <span class="tab-icon">🏠</span>Rent
+  </button>
+  <button class="tab" onclick="showTab('funds')" id="tab-funds">
+    <span class="tab-icon">₹</span>Funds
+  </button>
+  <button class="tab" onclick="showTab('plan')" id="tab-plan">
+    <span class="tab-icon">⚡</span>Plan
+  </button>
+  <button class="tab" onclick="showTab('alerts')" id="tab-alerts">
+    <span class="tab-icon">🔔</span>Alerts
+  </button>
+</div>
+</div>
+<div class="content">
+  <div id="page-dashboard">
+    <div class="cashflow-hero" id="cashflowHero">
+      <div class="cashflow-label">NET MONTHLY CASHFLOW</div>
+      <div class="cashflow-value" id="cfValue"></div>
+      <div class="cashflow-sub" id="cfSub"></div>
+      <div class="cashflow-row">
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">EMI OUTFLOW</div>
+          <div class="cashflow-item-val" id="dashEmiOut" style="color:var(--red)"></div>
+        </div>
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">RENT INFLOW</div>
+          <div class="cashflow-item-val" id="dashRentIn" style="color:var(--green)"></div>
+        </div>
+        <div class="cashflow-item">
+          <div class="cashflow-item-label">COVERAGE</div>
+          <div class="cashflow-item-val" id="dashCoverage" style="color:var(--amber)"></div>
+        </div>
+      </div>
+    </div>
+    <div id="sniperCard" class="card">Loading sniper trigger…</div>
+    <div class="potential-card" id="liquidCard">
+      <div class="cashflow-label">LIQUID NET WORTH</div>
+      <div class="potential-row" style="margin-top:6px">
+        <span style="color:#fff;font-size:14px;font-weight:700">Mutual funds</span>
+        <span id="dashLiquid" style="color:var(--green);font-weight:900;font-size:18px;font-family:'Space Grotesk',sans-serif">…</span>
+      </div>
+      <div class="live-row" id="dashLiquidSub">Fetching live NAVs…</div>
+      <div class="potential-row" id="dashPnlRow" style="display:none;margin-top:6px">
+        <span style="color:var(--muted);font-size:12px">Unrealised P&L</span>
+        <span id="dashPnl" style="font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+    <div class="card" id="netWorthCard">
+      <div class="cashflow-label">NET POSITION</div>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--muted);font-size:13px">Liquid (MFs)</span>
+        <span id="netLiquid" style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif">₹0</span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Outstanding debt</span>
+        <span id="netDebt" style="color:var(--red);font-weight:800;font-family:'Space Grotesk',sans-serif">₹0</span>
+      </div>
+      <hr class="potential-divider"/>
+      <div class="potential-row">
+        <span style="color:#fff;font-size:14px;font-weight:700">Liquid − debt</span>
+        <span id="netWorth" style="font-weight:900;font-size:18px;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div id="netWorthHint" style="font-size:11px;color:var(--muted);margin-top:6px">Enter outstanding on EMI for a real debt total.</div>
+    </div>
+    <div class="section-header">UPCOMING EMIs</div>
+    <div id="dashEmi"></div>
+    <div class="section-header" style="margin-top:14px">RENT STATUS THIS MONTH</div>
+    <div id="dashRent"></div>
+    <div class="section-header" style="margin-top:14px">FUTURE RENTAL POTENTIAL</div>
+    <div class="potential-card">
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Current Monthly Rent</span>
+        <span id="dashRentNow" style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px" id="dashVacantLabel">Vacant units (post possession)</span>
+        <span id="dashVacantAdd" style="color:var(--purple);font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div id="dashVacantList"></div>
+      <hr class="potential-divider"/>
+      <div class="potential-row">
+        <span style="color:#fff;font-size:14px;font-weight:700">Full Potential Rent</span>
+        <span id="dashRentFull" style="color:var(--amber);font-weight:900;font-size:16px;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row" style="margin-top:4px">
+        <span style="color:var(--muted);font-size:12px">Net cashflow after possession</span>
+        <span id="dashCfAfter" style="color:var(--green);font-weight:700;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+    <div class="section-header" style="margin-top:14px" id="dashEngineHead">SURPLUS ENGINE</div>
+    <div class="potential-card" onclick="showTab('plan')" style="cursor:pointer">
+      <div class="cashflow-label" id="dashEngineLabel">MONTHLY SURPLUS AFTER POSSESSION</div>
+      <div class="potential-row" style="margin-top:6px">
+        <span style="color:#fff;font-size:14px;font-weight:700">Default 70 / 30 split</span>
+        <span id="dashSurplus" style="color:var(--amber);font-weight:900;font-size:18px;font-family:'Space Grotesk',sans-serif">₹62,563</span>
+      </div>
+      <div class="split-bar" id="dashSplitBar"><div class="split-eq" style="width:70%"></div><div class="split-sn" style="width:30%"></div></div>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--green);font-size:12px;font-weight:700" id="dashSip">SIP ₹43,794</span>
+        <span style="color:var(--amber);font-size:12px;font-weight:700" id="dashSniper">Sniper ₹18,769</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px">Tap to model the split and prepay savings →</div>
+    </div>
+  </div>
+  <div id="page-emi" style="display:none">
+    <div class="section-header">LOAN TRACKER — tap any field to edit</div>
+    <div id="emiCards"></div>
+    <button class="btn btn-outline-purple" style="width:100%;margin-bottom:10px" onclick="addLoan()">+ Add loan</button>
+    <div class="card" style="margin-top:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted);font-size:13px">Total Monthly EMI</span>
+        <span id="emiTotalEl" style="color:var(--red);font-weight:900;font-size:17px;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+  </div>
+  <div id="page-rent" style="display:none">
+    <div class="section-header">RENT TRACKER — tap any field to edit</div>
+    <div id="rentCards"></div>
+    <button class="btn btn-outline-purple" style="width:100%;margin-bottom:8px" onclick="addTenant()">+ Add tenant</button>
+    <button class="btn btn-outline-purple" style="width:100%;margin-bottom:10px" onclick="addVacant()">+ Add vacant unit</button>
+    <div class="card" style="margin-top:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="color:var(--muted);font-size:13px">Current Monthly Income</span>
+        <span id="rentNowEl" style="color:var(--green);font-weight:900;font-size:17px;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted);font-size:13px">After vacant units rent</span>
+        <span id="rentFullEl" style="color:var(--purple);font-weight:700;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+  </div>
+  <div id="page-funds" style="display:none">
+    <div class="section-header">LIVE FOLIOS — units from your CAS</div>
+    <div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;font-weight:700">TOTAL LIQUID</div>
+          <div id="fundsTotal" style="font-size:26px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--green);margin-top:4px">…</div>
+          <div class="live-row" id="fundsStatus">Fetching live NAVs…</div>
+          <div id="fundsPnlLine" style="font-size:12px;font-weight:700;margin-top:6px"></div>
+        </div>
+        <button class="btn btn-outline-purple" onclick="refreshFunds(true)">Refresh</button>
+      </div>
+    </div>
+    <div id="fundCards"></div>
+    <button class="btn btn-outline-purple" style="width:100%;margin:8px 0 10px" onclick="addFund()">+ Add folio</button>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5;padding:4px 2px 12px">
+      Value = units × live NAV. Enter invested cost from your CAS to see gain/loss. Change the AMFI scheme code if a folio is the wrong plan.
+    </div>
+  </div>
+  <div id="page-plan" style="display:none">
+    <div id="planSniperStatus"></div>
+    <div class="section-header" id="planEngineHead">SURPLUS ROUTING</div>
+    <div class="card">
+      <div class="cashflow-label">ENGINE STARTS</div>
+      <div id="planCountdown" style="font-size:15px;font-weight:800;margin-top:4px;color:#fff"></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Vacant units that start renting + salary cover − EMI</div>
+      <div class="potential-row" style="margin-top:12px">
+        <span style="color:var(--muted);font-size:13px">Full rent</span>
+        <span id="planRentFull" style="font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Total EMI</span>
+        <span id="planEmiTotal" style="color:var(--red);font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Salary allocation</span>
+        <input class="balance-input" id="planSalary" type="text" inputmode="decimal"
+          onchange="savePlanField('salary', this.value)" onblur="savePlanField('salary', this.value)"/>
+      </div>
+      <hr class="potential-divider"/>
+      <div class="potential-row">
+        <span style="color:#fff;font-size:14px;font-weight:700">Monthly surplus</span>
+        <span id="planSurplus" style="color:var(--amber);font-weight:900;font-size:18px;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div class="cashflow-label">EQUITY SIP vs SNIPER</div>
+        <div id="planSplitLabel" style="font-size:13px;font-weight:800;color:var(--purple)"></div>
+      </div>
+      <input class="slider" id="planSlider" type="range" min="0" max="100" step="1" oninput="onPlanSlider(this.value)"/>
+      <div class="split-bar" id="planSplitBar"></div>
+      <div class="grid2" style="margin-top:12px;margin-bottom:0">
+        <div class="summary-cell">
+          <div class="summary-lbl" style="color:var(--green)">EQUITY SIP / MO</div>
+          <div class="summary-num" id="planSip" style="color:var(--green)"></div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-lbl" style="color:var(--amber)">SNIPER / MO</div>
+          <div class="summary-num" id="planSniper" style="color:var(--amber)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="cashflow-label">12-MONTH DEPLOYMENT</div>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--muted);font-size:13px">SIP corpus @ 12% p.a.</span>
+        <span id="planSipYear" style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Sniper cash pile</span>
+        <span id="planSniperYear" style="color:var(--amber);font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Combined after 12 months</span>
+        <span id="planCombinedYear" style="color:#fff;font-weight:800;font-family:'Space Grotesk',sans-serif"></span>
+      </div>
+    </div>
+    <div class="section-header">PREPAY vs SNIPER</div>
+    <div class="card" id="planPrepayCard"></div>
+    <div class="section-header">LOAN RATES — used for interest saved</div>
+    <div id="planRateCards"></div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5;padding:4px 2px 12px">
+      Sniper cash is the dry powder for a 10% market drop. The prepay model shows what that same monthly amount would save if it went to the highest-rate loan instead. Enter outstanding balances on the EMI tab for a real figure.
+    </div>
+  </div>
+  <div id="page-alerts" style="display:none">
+    <div class="section-header">ACTIVE ALERTS</div>
+    <div id="alertsList"></div>
+    <div class="section-header" style="margin-top:16px">MONTH SUMMARY</div>
+    <div class="summary-grid">
+      <div class="summary-cell">
+        <div class="summary-num" id="emiConfirmedCount" style="color:var(--green)">0/4</div>
+        <div class="summary-lbl">EMIs CONFIRMED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="rentReceivedCount" style="color:var(--green)">0/3</div>
+        <div class="summary-lbl">RENTS RECEIVED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="totalOutflow" style="color:var(--red)">₹0</div>
+        <div class="summary-lbl">EMI CONFIRMED</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-num" id="totalInflow" style="color:var(--green)">₹0</div>
+        <div class="summary-lbl">RENT CONFIRMED</div>
+      </div>
+    </div>
+    <div class="section-header" style="margin-top:16px">NOTES</div>
+    <textarea class="notes-area" id="notesArea" placeholder="Add notes for this month..." oninput="saveNotes()"></textarea>
+    <button class="btn btn-outline-purple" style="margin-top:8px;width:100%" onclick="resetMonth()">Reset this month (keeps a history copy)</button>
+    <div class="section-header" style="margin-top:16px">MONTH HISTORY</div>
+    <div id="monthHistory"></div>
+    <div class="section-header" style="margin-top:16px">DATA — backup stays on this device</div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px">Export JSON to keep holdings, balances, edited EMIs/rents and the plan. Restore on a new phone after installing the app.</div>
+      <button class="btn btn-outline-green" style="width:100%;margin-bottom:8px" onclick="exportBackup()">Export backup JSON</button>
+      <button class="btn btn-outline-purple" style="width:100%;margin-bottom:8px" onclick="document.getElementById('backupFile').click()">Restore from JSON</button>
+      <input id="backupFile" type="file" accept="application/json" style="display:none" onchange="importBackup(event)"/>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--muted);font-size:13px">Sniper drop %</span>
+        <input class="balance-input" style="width:72px" id="editDrop" type="text" inputmode="decimal"
+          onchange="editSetting('dropTrigger', this.value)" onblur="editSetting('dropTrigger', this.value)"/>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Sniper target ₹</span>
+        <input class="balance-input" id="editSniperTarget" type="text" inputmode="decimal"
+          onchange="editSetting('sniperTarget', this.value)" onblur="editSetting('sniperTarget', this.value)"/>
+      </div>
+      <button class="btn btn-outline-red" style="width:100%;margin-top:10px" onclick="restoreSeed()">Restore original portfolio</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+let LOANS = [
+  { id:'bs', name:'Bramha Smart', dueDate:2, emi:19572, color:'#7C6EFA', rate:8.5 },
+  { id:'gm', name:'Ganga Millennia', dueDate:5, emi:16000, color:'#00D9A5', rate:8.5 },
+  { id:'vj', name:'VJ Highstreet', dueDate:10, emi:30000, color:'#FFB830', rate:8.75 },
+  { id:'cl', name:'Car Loan', dueDate:10, emi:25047, color:'#FF4D6D', rate:9.5 },
+];
+const DEFAULT_SALARY = 67882;
+const DEFAULT_EQUITY_PCT = 70;
+let TENANTS = [
+  { id:'nl', property:'Ganga Millennia', tenant:'Neelam', rent:13500, dueStart:1, dueEnd:2 },
+  { id:'py', property:'Bramha Smart', tenant:'Payal', rent:16000, dueStart:9, dueEnd:10 },
+  { id:'dt', property:'VJ Highstreet', tenant:'DTwelve', rent:11800, dueStart:10, dueEnd:11 },
+];
+let VACANTS = [
+  { id:'o512', property:'Office 512', expectedRent:22000, possession:'2027-01', tenant:'', dueStart:1, dueEnd:5 },
+  { id:'o513', property:'Office 513', expectedRent:22000, possession:'2027-01', tenant:'', dueStart:1, dueEnd:5 },
+];
+let FUNDS = [
+  { id:'nip', name:'Nippon Small Cap', scheme:118778, color:'#FF4D6D', seedUnits:791.321 },
+  { id:'hdfc', name:'HDFC Flexi Cap', scheme:118955, color:'#3D9EFF', seedUnits:0 },
+  { id:'kotak', name:'Kotak Mid Cap', scheme:119775, color:'#7C6EFA', seedUnits:0 },
+  { id:'mo', name:'Motilal Midcap', scheme:127042, color:'#FFB830', seedUnits:0 },
+  { id:'ppf', name:'Parag Parikh Flexi Cap', scheme:122639, color:'#00D9A5', seedUnits:0 },
+];
+const INDEX_FUNDS = [
+  { id:'nifty', name:'Nifty 50', scheme:120716 },
+  { id:'midcap', name:'Nifty Midcap 150', scheme:147622 },
+];
+let SNIPER_TARGET = 1000000;
+let DROP_TRIGGER = 10;
+let indexMarks = {};
+let indexLive = false;
+let fundNavs = {};
+let fundNavLive = false;
+const today = new Date();
+const todayDate = today.getDate();
+const monthKey = `${today.getFullYear()}-${today.getMonth()+1}`;
+function ls(key, fallback) {
+  try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : fallback; } catch { return fallback; }
+}
+function lsSave(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+const SEED = {
+  loans: JSON.parse(JSON.stringify(LOANS)),
+  tenants: JSON.parse(JSON.stringify(TENANTS)),
+  vacants: JSON.parse(JSON.stringify(VACANTS)),
+  funds: JSON.parse(JSON.stringify(FUNDS)),
+  dropTrigger: 10,
+  sniperTarget: 1000000,
+};
+function hydratePortfolio() {
+  const p = ls('portfolio_v1', null);
+  if (!p) return;
+  if (Array.isArray(p.loans) && p.loans.length) LOANS = p.loans;
+  if (Array.isArray(p.tenants) && p.tenants.length) TENANTS = p.tenants;
+  if (Array.isArray(p.vacants)) VACANTS = p.vacants;
+  if (Array.isArray(p.funds) && p.funds.length) FUNDS = p.funds;
+  if (Number.isFinite(Number(p.dropTrigger))) DROP_TRIGGER = Number(p.dropTrigger);
+  if (Number.isFinite(Number(p.sniperTarget))) SNIPER_TARGET = Number(p.sniperTarget);
+}
+function shapeVacants() {
+  VACANTS.forEach(v => {
+    if (!v.possession) v.possession = '2027-01';
+    if (v.tenant == null) v.tenant = '';
+    if (!v.dueStart) v.dueStart = 1;
+    if (!v.dueEnd) v.dueEnd = 5;
+  });
+}
+function persistPortfolio() {
+  lsSave('portfolio_v1', {
+    loans: LOANS, tenants: TENANTS, vacants: VACANTS, funds: FUNDS,
+    dropTrigger: DROP_TRIGGER, sniperTarget: SNIPER_TARGET,
+  });
+}
+function emiTotal() { return LOANS.reduce((s, l) => s + Number(l.emi || 0), 0); }
+function rentNow() { return TENANTS.reduce((s, t) => s + Number(t.rent || 0), 0); }
+function vacantRent() { return VACANTS.reduce((s, v) => s + Number(v.expectedRent || 0), 0); }
+function rentFull() { return rentNow() + vacantRent(); }
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[c]));
+}
+function refreshAll() {
+  renderDashboard(); renderEmi(); renderRent(); renderPlanPreview();
+  if (document.getElementById('page-plan').style.display !== 'none') renderPlan();
+  if (document.getElementById('page-alerts').style.display !== 'none') renderAlerts();
+  if (document.getElementById('page-funds').style.display !== 'none') renderFunds();
+  renderSniper();
+}
+function getDaysUntil(d) {
+  if (d >= todayDate) return d - todayDate;
+  const dim = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+  return dim - todayDate + d;
+}
+function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+function statusColor(days) {
+  if (days === 0) return '#FF4D6D';
+  if (days <= 1) return '#FF4D6D';
+  if (days <= 3) return '#FFB830';
+  return '#00D9A5';
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function showTab(name) {
+  ['dashboard','emi','rent','funds','plan','alerts'].forEach(t => {
+    document.getElementById('page-'+t).style.display = t===name ? '' : 'none';
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+  });
+  if (name === 'alerts') renderAlerts();
+  if (name === 'funds') renderFunds();
+  if (name === 'plan') renderPlan();
+}
+function renderHeader() {
+  document.getElementById('headerDate').textContent = today.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const alerts = buildAlerts();
+  const urgent = alerts.filter(a => a.urgent);
+  const el = document.getElementById('headerAlert');
+  el.classList.remove('show', 'sniper');
+  el.onclick = null;
+  const snap = sniperSnapshot();
+  const deployed = sniperIsDeployed(snap);
+  if (snap.open) {
+    el.textContent = deployed
+      ? `✓ SNIPER DEPLOYED · ${snap.leader} ${snap.maxDrop.toFixed(1)}% off high`
+      : `🎯 SNIPER WINDOW · ${snap.leader} ${snap.maxDrop.toFixed(1)}% off 52-week high — deploy ${fmt(SNIPER_TARGET)}`;
+    el.classList.add('show', 'sniper');
+    el.onclick = () => showTab('dashboard');
+    return;
+  }
+  if (urgent.length) {
+    el.textContent = `🔔 ${urgent.length} urgent alert${urgent.length>1?'s':''} need attention`;
+    el.classList.add('show');
+    el.onclick = () => showTab('alerts');
+  }
+}
+function renderDashboard() {
+  const emi = emiTotal();
+  const rent = rentNow();
+  const vac = vacantRent();
+  const full = rent + vac;
+  const cf = rent - emi;
+  const cov = emi ? Math.round(rent / emi * 100) : 0;
+  const after = full - emi;
+  const cfEl = document.getElementById('cfValue');
+  cfEl.textContent = fmt(Math.abs(cf));
+  cfEl.style.color = cf >= 0 ? '#00D9A5' : '#FF4D6D';
+  document.getElementById('cfSub').textContent = cf < 0 ? 'Shortfall covered by salary / savings' : 'Positive cashflow';
+  document.getElementById('dashEmiOut').textContent = fmt(emi);
+  document.getElementById('dashRentIn').textContent = fmt(rent);
+  document.getElementById('dashCoverage').textContent = cov + '%';
+  document.getElementById('dashRentNow').textContent = fmt(rent);
+  document.getElementById('dashVacantAdd').textContent = vac ? '+' + fmt(vac) : 'None';
+  const vacLabel = document.getElementById('dashVacantLabel');
+  if (vacLabel) vacLabel.textContent = VACANTS.length ? ('Vacant units (' + VACANTS.length + ')') : 'Vacant units';
+  const vacList = document.getElementById('dashVacantList');
+  if (vacList) {
+    if (!VACANTS.length) {
+      vacList.innerHTML = `<div style="font-size:12px;color:var(--green);margin-top:6px;font-weight:700">All units occupied — current rent is full potential</div>`;
+    } else {
+      vacList.innerHTML = VACANTS.map(v => {
+        const mo = monthsUntilYm(v.possession);
+        const when = mo <= 0 ? 'possession this month' : mo + ' month' + (mo === 1 ? '' : 's') + ' to ' + formatYm(v.possession);
+        return `<div class="potential-row" style="margin-top:8px;align-items:flex-start">
+          <div>
+            <div style="color:#fff;font-size:13px;font-weight:700">${esc(v.property)}</div>
+            <div style="color:var(--muted);font-size:11px;margin-top:2px">${when}${v.tenant ? ' · ' + esc(v.tenant) : ''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="color:var(--purple);font-weight:800;font-family:'Space Grotesk',sans-serif">${fmt(v.expectedRent)}</div>
+            <button class="btn ${mo<=0?'btn-confirm':'btn-outline-purple'}" style="margin-top:6px;padding:6px 10px;font-size:10px"
+              onclick="event.stopPropagation();occupyVacant('${v.id}')">${mo<=0?'Start renting':'Start early'}</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+  document.getElementById('dashRentFull').textContent = fmt(full);
+  const afterEl = document.getElementById('dashCfAfter');
+  afterEl.textContent = (after < 0 ? '−' : '') + fmt(Math.abs(after));
+  afterEl.style.color = after >= 0 ? 'var(--green)' : 'var(--red)';
+  const emiData = ls(monthKey+'_emi', {});
+  let html = '';
+  [...LOANS].sort((a,b) => getDaysUntil(a.dueDate)-getDaysUntil(b.dueDate)).forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const sc = statusColor(days);
+    const confirmed = emiData[l.id];
+    html += `<div class="item-row ${days<=1&&!confirmed?'urgent':confirmed?'confirmed':''}">
+      <div class="item-left">
+        <div class="item-name">${esc(l.name)}</div>
+        <div class="item-sub">Due ${l.dueDate}th every month</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount" style="color:${l.color}">${fmt(l.emi)}</div>
+        <div class="item-status" style="color:${confirmed?'#00D9A5':sc}">${confirmed?'✓ CONFIRMED':days===0?'DUE TODAY':days===1?'TOMORROW':days+' DAYS'}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('dashEmi').innerHTML = html;
+  const rentData = ls(monthKey+'_rent', {});
+  html = '';
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    const overdue = todayDate > t.dueEnd && !received;
+    html += `<div class="item-row ${overdue?'urgent':received?'confirmed':''}">
+      <div class="item-left">
+        <div class="item-name">${esc(t.property)}</div>
+        <div class="item-sub">${esc(t.tenant)} · Due ${t.dueStart}–${t.dueEnd}th</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount" style="color:#00D9A5">${fmt(t.rent)}</div>
+        <div class="item-status" style="color:${received?'#00D9A5':overdue?'#FF4D6D':'#FFB830'}">${received?'✓ RECEIVED':overdue?'OVERDUE':'PENDING'}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('dashRent').innerHTML = html;
+}
+function renderEmi() {
+  const emiData = ls(monthKey+'_emi', {});
+  const balances = ls('loan_balances', {});
+  let html = '';
+  LOANS.forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const sc = statusColor(days);
+    const confirmed = emiData[l.id];
+    const pct = Math.max(4, 100 - (days/30)*100);
+    const bal = balances[l.id] || '';
+    html += `<div class="card ${days<=1&&!confirmed?'urgent':confirmed?'ok':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <input class="balance-input" style="width:58%;text-align:left" type="text" value="${esc(l.name)}"
+          onchange="editLoan('${l.id}','name',this.value)" onblur="editLoan('${l.id}','name',this.value)"/>
+        <input class="balance-input" style="width:38%" type="text" inputmode="decimal" value="${l.emi}"
+          onchange="editLoan('${l.id}','emi',this.value)" onblur="editLoan('${l.id}','emi',this.value)"/>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Due date (1–28)</span>
+        <input class="balance-input" style="width:72px" type="text" inputmode="numeric" value="${l.dueDate}"
+          onchange="editLoan('${l.id}','dueDate',this.value)" onblur="editLoan('${l.id}','dueDate',this.value)"/>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;color:var(--muted)">Outstanding Balance</span>
+        <input class="balance-input" type="text" value="${esc(bal)}" placeholder="Tap to enter"
+          onchange="saveBalance('${l.id}', this.value)" onblur="saveBalance('${l.id}', this.value)"/>
+      </div>
+      <div class="countdown-wrap">
+        <div class="countdown-top">
+          <span class="countdown-label" style="color:${confirmed?'#00D9A5':sc}">${confirmed?'✓ EMI CONFIRMED':days===0?'DUE TODAY':days===1?'DUE TOMORROW':days+' DAYS AWAY'}</span>
+          <span class="countdown-next">Next: ${l.dueDate}th</span>
+        </div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${l.color}"></div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ${confirmed?'btn-confirmed':'btn-outline-green'}" style="flex:1"
+          onclick="toggleEmi('${l.id}')">
+          ${confirmed?'✓ Deducted — Tap to Undo':'Mark as Deducted'}
+        </button>
+        <button class="btn btn-outline-red" onclick="deleteLoan('${l.id}')">Delete</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('emiCards').innerHTML = html;
+  const tot = document.getElementById('emiTotalEl');
+  if (tot) tot.textContent = fmt(emiTotal());
+}
+function saveBalance(id, val) {
+  const b = ls('loan_balances', {});
+  b[id] = val;
+  lsSave('loan_balances', b);
+  renderLiquid();
+  showToast('Balance saved');
+}
+function toggleEmi(id) {
+  const d = ls(monthKey+'_emi', {});
+  d[id] = !d[id];
+  lsSave(monthKey+'_emi', d);
+  renderEmi(); renderDashboard(); renderAlerts();
+  showToast(d[id] ? '✓ EMI marked as deducted' : 'Marked as pending');
+}
+function renderRent() {
+  const rentData = ls(monthKey+'_rent', {});
+  let html = '';
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    const overdue = todayDate > t.dueEnd && !received;
+    html += `<div class="card ${overdue?'urgent':received?'ok':''}">
+      <input class="balance-input" style="width:100%;text-align:left" type="text" value="${esc(t.property)}"
+        onchange="editTenant('${t.id}','property',this.value)" onblur="editTenant('${t.id}','property',this.value)"/>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <input class="balance-input" style="flex:1;text-align:left" type="text" value="${esc(t.tenant)}"
+          onchange="editTenant('${t.id}','tenant',this.value)" onblur="editTenant('${t.id}','tenant',this.value)"/>
+        <input class="balance-input" style="width:110px" type="text" inputmode="decimal" value="${t.rent}"
+          onchange="editTenant('${t.id}','rent',this.value)" onblur="editTenant('${t.id}','rent',this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Due window</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input class="balance-input" style="width:52px" type="text" inputmode="numeric" value="${t.dueStart}"
+            onchange="editTenant('${t.id}','dueStart',this.value)"/>
+          <span style="color:var(--muted)">–</span>
+          <input class="balance-input" style="width:52px" type="text" inputmode="numeric" value="${t.dueEnd}"
+            onchange="editTenant('${t.id}','dueEnd',this.value)"/>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:700;margin-top:8px;color:${received?'#00D9A5':overdue?'#FF4D6D':'#FFB830'}">
+        ${received?'✓ RECEIVED':overdue?'⚠ OVERDUE':'PENDING'}
+      </div>
+      <div class="btn-row">
+        <button class="btn ${received?'btn-confirmed':'btn-outline-green'}" style="flex:1" onclick="toggleRent('${t.id}','received')">
+          ${received?'✓ Received — Tap to Undo':'Mark Received'}
+        </button>
+        ${!received ? `<button class="btn btn-outline-red" style="flex:1" onclick="toggleRent('${t.id}','notreceived')">Not Received</button>` : ''}
+        <button class="btn btn-outline-red" onclick="vacateTenant('${t.id}')">Vacate</button>
+        <button class="btn btn-outline-red" onclick="deleteTenant('${t.id}')">Delete</button>
+      </div>
+    </div>`;
+  });
+  html += `<div class="section-header" style="margin-top:14px">VACANT UNITS</div>`;
+  if (!VACANTS.length) {
+    html += `<div class="card"><div style="font-size:13px;color:var(--muted);font-weight:600">No vacant units. Add one, or all offices are already on the rent roll.</div></div>`;
+  }
+  VACANTS.forEach(v => {
+    const mo = monthsUntilYm(v.possession);
+    const badge = mo <= 0 ? 'POSSESSION THIS MONTH' : 'VACANT · ' + mo + ' MO TO ' + formatYm(v.possession);
+    html += `<div class="card ${mo<=0?'ok':''}">
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="balance-input" style="flex:1;text-align:left" type="text" value="${esc(v.property)}"
+          onchange="editVacant('${v.id}','property',this.value)"/>
+        <input class="balance-input" style="width:110px" type="text" inputmode="decimal" value="${v.expectedRent}"
+          onchange="editVacant('${v.id}','expectedRent',this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Incoming tenant</span>
+        <input class="balance-input" style="flex:1;text-align:left" type="text" placeholder="Name at possession"
+          value="${esc(v.tenant || '')}" onchange="editVacant('${v.id}','tenant',this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Possession (YYYY-MM)</span>
+        <input class="balance-input" style="width:110px" type="text" placeholder="2027-01" value="${esc(v.possession || '')}"
+          onchange="editVacant('${v.id}','possession',this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Rent due window</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input class="balance-input" style="width:52px" type="text" inputmode="numeric" value="${v.dueStart || 1}"
+            onchange="editVacant('${v.id}','dueStart',this.value)"/>
+          <span style="color:var(--muted)">–</span>
+          <input class="balance-input" style="width:52px" type="text" inputmode="numeric" value="${v.dueEnd || 5}"
+            onchange="editVacant('${v.id}','dueEnd',this.value)"/>
+        </div>
+      </div>
+      <div style="margin-top:8px"><span class="vacant-badge ${mo<=0?'open':''}">${badge}</span></div>
+      <button class="btn btn-confirm" style="width:100%;margin-top:10px" onclick="occupyVacant('${v.id}')">${mo<=0?'Start renting — move to live roll':'Start renting early'}</button>
+      <button class="btn btn-outline-red" style="width:100%;margin-top:8px" onclick="deleteVacant('${v.id}')">Delete vacant unit</button>
+    </div>`;
+  });
+  document.getElementById('rentCards').innerHTML = html;
+  const nEl = document.getElementById('rentNowEl');
+  const fEl = document.getElementById('rentFullEl');
+  if (nEl) nEl.textContent = fmt(rentNow());
+  if (fEl) fEl.textContent = fmt(rentFull());
+}
+function toggleRent(id, action) {
+  const d = ls(monthKey+'_rent', {});
+  if (action === 'received') {
+    d[id] = !d[id];
+    showToast(d[id] ? '✓ Rent marked as received' : 'Marked as pending');
+  } else {
+    d[id] = false;
+    showToast('⚠ Marked as not received');
+  }
+  lsSave(monthKey+'_rent', d);
+  renderRent(); renderDashboard(); renderAlerts();
+}
+function buildAlerts() {
+  const alerts = [];
+  const snap = sniperSnapshot();
+  if (snap.open) {
+    alerts.push({
+      type:'sniper',
+      urgent:true,
+      msg:`🎯 SNIPER WINDOW OPEN — ${snap.leader} is ${snap.maxDrop.toFixed(1)}% below its 52-week high. Deploy ${fmt(SNIPER_TARGET)}.`
+    });
+  }
+  const emiData = ls(monthKey+'_emi', {});
+  const rentData = ls(monthKey+'_rent', {});
+  LOANS.forEach(l => {
+    const days = getDaysUntil(l.dueDate);
+    const confirmed = emiData[l.id];
+    if (!confirmed) {
+      if (days === 0) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI of ${fmt(l.emi)} is DUE TODAY!`, urgent:true, loanId:l.id });
+      else if (days === 1) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI due TOMORROW — ensure funds in account.`, urgent:true, loanId:l.id });
+      else if (days === 3) alerts.push({ type:'emi', msg:`🏦 ${l.name} EMI due in 3 days (${l.dueDate}th).`, urgent:false });
+    }
+    if (todayDate === l.dueDate + 1 && !confirmed) {
+      alerts.push({ type:'check', msg:`✅ Confirm: Was ${l.name} EMI deducted yesterday?`, urgent:true, loanId:l.id });
+    }
+  });
+  TENANTS.forEach(t => {
+    const received = rentData[t.id];
+    if (!received) {
+      if (todayDate > t.dueEnd && todayDate <= t.dueEnd + 5) {
+        alerts.push({ type:'rent', msg:`🏠 ${t.tenant} (${t.property}) rent NOT received — follow up now!`, urgent:true });
+      } else if (getDaysUntil(t.dueStart) <= 2) {
+        alerts.push({ type:'rent', msg:`🏠 ${t.tenant}'s rent due in ${getDaysUntil(t.dueStart)} day(s).`, urgent:false });
+      }
+    }
+  });
+  VACANTS.forEach(v => {
+    const mo = monthsUntilYm(v.possession);
+    if (mo <= 0) {
+      alerts.push({ type:'vacant', urgent:true, vacantId:v.id, msg:`🏠 ${v.property} possession window is open — start renting at ${fmt(v.expectedRent)}/mo.` });
+    } else if (mo <= 2) {
+      alerts.push({ type:'vacant', urgent:false, msg:`🏠 ${v.property} possession in ${mo} month${mo===1?'':'s'} (${v.possession}).` });
+    }
+  });
+  return alerts;
+}
+function renderAlerts() {
+  const alerts = buildAlerts();
+  const emiData = ls(monthKey+'_emi', {});
+  const rentData = ls(monthKey+'_rent', {});
+  let html = '';
+  if (alerts.length === 0) {
+    html = `<div style="text-align:center;padding:40px 20px">
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="font-size:16px;font-weight:700;color:var(--muted)">All clear!</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">No alerts right now.</div>
+    </div>`;
+  } else {
+    alerts.forEach((a) => {
+      html += `<div class="alert-item ${a.urgent?'urgent':''}">
+        <div class="alert-msg ${a.urgent?'urgent-text':''}">${a.msg}</div>
+        ${a.loanId ? `<button class="btn btn-outline-green" style="margin-top:10px" onclick="toggleEmi('${a.loanId}');renderAlerts()">✓ Confirm Deducted</button>` : ''}
+        ${a.vacantId ? `<button class="btn btn-confirm" style="margin-top:10px;width:100%" onclick="occupyVacant('${a.vacantId}')">Start renting</button>` : ''}
+      </div>`;
+    });
+  }
+  document.getElementById('alertsList').innerHTML = html;
+  const emiConf = LOANS.filter(l => emiData[l.id]).length;
+  const rentRecv = TENANTS.filter(t => rentData[t.id]).length;
+  const outflow = LOANS.filter(l => emiData[l.id]).reduce((s,l) => s+l.emi, 0);
+  const inflow = TENANTS.filter(t => rentData[t.id]).reduce((s,t) => s+t.rent, 0);
+  document.getElementById('emiConfirmedCount').textContent = `${emiConf}/${LOANS.length}`;
+  document.getElementById('rentReceivedCount').textContent = `${rentRecv}/${TENANTS.length}`;
+  document.getElementById('totalOutflow').textContent = fmt(outflow);
+  document.getElementById('totalInflow').textContent = fmt(inflow);
+  document.getElementById('notesArea').value = ls(monthKey+'_notes', '');
+  const dropEl = document.getElementById('editDrop');
+  const tgtEl = document.getElementById('editSniperTarget');
+  if (dropEl && document.activeElement !== dropEl) dropEl.value = String(DROP_TRIGGER);
+  if (tgtEl && document.activeElement !== tgtEl) tgtEl.value = SNIPER_TARGET.toLocaleString('en-IN');
+  renderHistory();
+}
+function saveNotes() {
+  lsSave(monthKey+'_notes', document.getElementById('notesArea').value);
+}
+function monthKeyOf(d) {
+  return d.getFullYear() + '-' + (d.getMonth() + 1);
+}
+function monthLabel(k) {
+  const p = String(k).split('-');
+  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const m = Number(p[1]);
+  return (names[m - 1] || k) + ' ' + p[0];
+}
+function prevMonthKey() {
+  return monthKeyOf(new Date(today.getFullYear(), today.getMonth() - 1, 1));
+}
+function getHistory() {
+  const h = ls('month_history', {});
+  return h && typeof h === 'object' ? h : {};
+}
+function snapshotMonth(key) {
+  const emi = ls(key + '_emi', {}) || {};
+  const rent = ls(key + '_rent', {}) || {};
+  const notes = ls(key + '_notes', '') || '';
+  const isNow = key === monthKey;
+  const loans = isNow ? LOANS.map(l => ({ id: l.id, name: l.name, emi: l.emi })) : ((getHistory()[key] && getHistory()[key].loans) || LOANS.map(l => ({ id: l.id, name: l.name, emi: l.emi })));
+  const tenants = isNow ? TENANTS.map(t => ({ id: t.id, property: t.property, tenant: t.tenant, rent: t.rent })) : ((getHistory()[key] && getHistory()[key].tenants) || TENANTS.map(t => ({ id: t.id, property: t.property, tenant: t.tenant, rent: t.rent })));
+  const emiCount = loans.filter(l => emi[l.id]).length;
+  const rentCount = tenants.filter(t => rent[t.id]).length;
+  const outflow = loans.filter(l => emi[l.id]).reduce((s, l) => s + Number(l.emi || 0), 0);
+  const inflow = tenants.filter(t => rent[t.id]).reduce((s, t) => s + Number(t.rent || 0), 0);
+  const has = emiCount > 0 || rentCount > 0 || String(notes).trim().length > 0;
+  return {
+    key, label: monthLabel(key), emi, rent, notes, loans, tenants,
+    emiCount, rentCount, emiN: loans.length, rentN: tenants.length,
+    outflow, inflow, has,
+  };
+}
+function archiveMonth(key, force) {
+  const snap = snapshotMonth(key);
+  if (!snap.has && !force) return;
+  const h = getHistory();
+  h[key] = Object.assign({}, snap, { archivedAt: new Date().toISOString() });
+  lsSave('month_history', h);
+}
+function ensurePrevArchived() {
+  archiveMonth(prevMonthKey(), false);
+}
+let historyOpen = monthKey;
+function toggleHistory(k) {
+  historyOpen = historyOpen === k ? '' : k;
+  renderHistory();
+}
+function renderHistory() {
+  const el = document.getElementById('monthHistory');
+  if (!el) return;
+  const hist = getHistory();
+  const keys = [];
+  for (let i = 0; i < 12; i++) keys.push(monthKeyOf(new Date(today.getFullYear(), today.getMonth() - i, 1)));
+  let html = '';
+  keys.forEach(k => {
+    const live = snapshotMonth(k);
+    const stored = hist[k];
+    const snap = k === monthKey ? live : (stored && stored.has ? stored : live);
+    if (k !== monthKey && !snap.has) return;
+    const open = historyOpen === k;
+    const tag = k === monthKey ? 'THIS MONTH' : 'ARCHIVED';
+    html += `<div class="card" style="cursor:pointer" onclick="toggleHistory('${k}')">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#fff">${esc(snap.label)}</div>
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700;margin-top:2px">${tag}</div>
+        </div>
+        <div style="text-align:right;font-size:12px;font-weight:700">
+          <div style="color:var(--red)">${snap.emiCount}/${snap.emiN} EMI</div>
+          <div style="color:var(--green)">${snap.rentCount}/${snap.rentN} rent</div>
+        </div>
+      </div>
+      ${open ? `<div style="margin-top:10px" onclick="event.stopPropagation()">
+        <div class="potential-row"><span style="color:var(--muted);font-size:12px">Confirmed outflow</span><span style="color:var(--red);font-weight:800">${fmt(snap.outflow)}</span></div>
+        <div class="potential-row"><span style="color:var(--muted);font-size:12px">Confirmed inflow</span><span style="color:var(--green);font-weight:800">${fmt(snap.inflow)}</span></div>
+        ${(snap.loans || []).map(l => `<div style="font-size:12px;margin-top:4px;color:${snap.emi[l.id]?'var(--green)':'var(--muted)'}">${snap.emi[l.id]?'✓':'○'} ${esc(l.name)} ${fmt(l.emi)}</div>`).join('')}
+        ${(snap.tenants || []).map(t => `<div style="font-size:12px;margin-top:4px;color:${snap.rent[t.id]?'var(--green)':'var(--muted)'}">${snap.rent[t.id]?'✓':'○'} ${esc(t.tenant)} · ${esc(t.property)} ${fmt(t.rent)}</div>`).join('')}
+        ${snap.notes ? `<div style="font-size:12px;color:var(--text);margin-top:8px;line-height:1.45">${esc(snap.notes)}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:8px">No notes</div>'}
+        ${k === monthKey ? `<div style="font-size:11px;color:var(--muted);margin-top:8px">Live ticks are on EMI / Rent.${stored && stored.has ? ' Last copy kept: ' + stored.emiCount + '/' + stored.emiN + ' EMI · ' + stored.rentCount + '/' + stored.rentN + ' rent.' : ' Reset keeps a copy.'}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:8px">Read-only. JSON backup includes this month.</div>'}
+      </div>` : `<div style="font-size:11px;color:var(--muted);margin-top:6px">${snap.outflow || snap.inflow ? fmt(snap.inflow) + ' in · ' + fmt(snap.outflow) + ' out' : 'Tap to open'}</div>`}
+    </div>`;
+  });
+  if (!html) html = `<div class="card"><div style="font-size:13px;color:var(--muted);font-weight:600">No months stored yet. Ticks from last month appear here automatically.</div></div>`;
+  el.innerHTML = html;
+}
+function resetMonth() {
+  if (!confirm('Reset this month\'s EMI / rent ticks and notes? A copy is kept in Month history.')) return;
+  archiveMonth(monthKey, true);
+  lsSave(monthKey+'_emi', {});
+  lsSave(monthKey+'_rent', {});
+  lsSave(monthKey+'_notes', '');
+  renderDashboard(); renderEmi(); renderRent(); renderAlerts();
+  showToast('This month reset — history kept');
+}
+function getHoldings() {
+  const h = ls('mf_holdings', null);
+  if (h) return h;
+  const seed = {};
+  FUNDS.forEach(f => { seed[f.id] = f.seedUnits; });
+  lsSave('mf_holdings', seed);
+  return seed;
+}
+function fundValue(id) {
+  const units = Number(getHoldings()[id] || 0);
+  const nav = Number(fundNavs[id]?.nav || 0);
+  return units * nav;
+}
+function liquidTotal() {
+  return FUNDS.reduce((s, f) => s + fundValue(f.id), 0);
+}
+function getCosts() {
+  const c = ls('mf_cost', null);
+  return c && typeof c === 'object' ? c : {};
+}
+function investedOf(id) {
+  return Number(getCosts()[id] || 0);
+}
+function investedTotal() {
+  return FUNDS.reduce((s, f) => s + investedOf(f.id), 0);
+}
+function pnlOf(id) {
+  const cost = investedOf(id);
+  if (!cost) return null;
+  return fundValue(id) - cost;
+}
+function debtTotal() {
+  return LOANS.reduce((s, l) => s + outstandingOf(l.id), 0);
+}
+function saveCost(id, val) {
+  if (val === '') {
+    const c = getCosts();
+    delete c[id];
+    lsSave('mf_cost', c);
+    renderFunds(); renderLiquid();
+    showToast('Cost cleared');
+    return;
+  }
+  const n = parseMoney(val);
+  if (!Number.isFinite(n) || n < 0) { showToast('Enter a valid invested amount'); return; }
+  const c = getCosts();
+  c[id] = n;
+  lsSave('mf_cost', c);
+  renderFunds(); renderLiquid();
+  showToast('Invested cost saved');
+}
+function pnlColor(n) {
+  if (n > 0) return 'var(--green)';
+  if (n < 0) return 'var(--red)';
+  return 'var(--muted)';
+}
+function fmtSigned(n) {
+  const v = Math.round(n);
+  if (v > 0) return '+' + fmt(v);
+  if (v < 0) return '−' + fmt(Math.abs(v));
+  return fmt(0);
+}
+function renderLiquid() {
+  const total = liquidTotal();
+  const filled = FUNDS.filter(f => Number(getHoldings()[f.id] || 0) > 0).length;
+  const dates = FUNDS.map(f => fundNavs[f.id]?.date).filter(Boolean);
+  const date = dates[0] || '';
+  const hasNav = dates.length > 0;
+  const el = document.getElementById('dashLiquid');
+  const sub = document.getElementById('dashLiquidSub');
+  if (el) el.textContent = total ? fmt(Math.round(total)) : '₹0';
+  if (sub) {
+    const label = !hasNav
+      ? 'Fetching live NAVs…'
+      : fundNavLive
+        ? `Live NAV${date ? ' · ' + date : ''} · ${filled}/${FUNDS.length} folios set`
+        : `Last saved NAV${date ? ' · ' + date : ''} · check network`;
+    sub.innerHTML = `<span class="live-dot ${!hasNav ? 'off' : fundNavLive ? '' : 'stale'}"></span>` + label;
+  }
+  const cost = investedTotal();
+  const pnlRow = document.getElementById('dashPnlRow');
+  const pnlEl = document.getElementById('dashPnl');
+  if (pnlRow && pnlEl) {
+    if (cost > 0) {
+      const pnl = total - cost;
+      const pct = cost ? (pnl / cost * 100) : 0;
+      pnlRow.style.display = '';
+      pnlEl.style.color = pnlColor(pnl);
+      pnlEl.textContent = fmtSigned(pnl) + ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%)';
+    } else {
+      pnlRow.style.display = 'none';
+    }
+  }
+  const debt = debtTotal();
+  const net = total - debt;
+  const nLiq = document.getElementById('netLiquid');
+  const nDebt = document.getElementById('netDebt');
+  const nWorth = document.getElementById('netWorth');
+  const nHint = document.getElementById('netWorthHint');
+  if (nLiq) nLiq.textContent = fmt(Math.round(total));
+  if (nDebt) nDebt.textContent = debt ? fmt(Math.round(debt)) : '₹0';
+  if (nWorth) {
+    nWorth.textContent = (net < 0 ? '−' : '') + fmt(Math.abs(Math.round(net)));
+    nWorth.style.color = net >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+  if (nHint) {
+    nHint.textContent = debt
+      ? (LOANS.filter(l => outstandingOf(l.id) > 0).length + '/' + LOANS.length + ' loans have outstanding')
+      : 'Enter outstanding on EMI for a real debt total.';
+  }
+}
+function renderFunds() {
+  const h = getHoldings();
+  const total = liquidTotal();
+  const cost = investedTotal();
+  document.getElementById('fundsTotal').textContent = total ? fmt(Math.round(total)) : '₹0';
+  const st = document.getElementById('fundsStatus');
+  const dates = FUNDS.map(f => fundNavs[f.id]?.date).filter(Boolean);
+  st.innerHTML = `<span class="live-dot ${fundNavLive?'':'stale'}"></span>` +
+    (fundNavLive ? `AMFI NAVs${dates[0] ? ' · ' + dates[0] : ''}` : 'Offline — last saved NAVs');
+  const pnlLine = document.getElementById('fundsPnlLine');
+  if (pnlLine) {
+    if (cost > 0) {
+      const pnl = total - cost;
+      const pct = pnl / cost * 100;
+      pnlLine.style.color = pnlColor(pnl);
+      pnlLine.textContent = 'P&L ' + fmtSigned(pnl) + ' on cost ' + fmt(Math.round(cost)) + ' · ' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
+    } else {
+      pnlLine.style.color = 'var(--muted)';
+      pnlLine.textContent = 'Add invested cost on each folio to see P&L';
+    }
+  }
+  let html = '';
+  FUNDS.forEach(f => {
+    const nav = fundNavs[f.id];
+    const units = Number(h[f.id] || 0);
+    const value = units * Number(nav?.nav || 0);
+    const invested = investedOf(f.id);
+    const pnl = invested ? value - invested : null;
+    const pct = invested ? (value - invested) / invested * 100 : null;
+    html += `<div class="card">
+      <input class="balance-input" style="width:100%;text-align:left" type="text" value="${esc(f.name)}"
+        onchange="editFund('${f.id}','name',this.value)"/>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <span style="font-size:18px;font-weight:900;color:${f.color};font-family:'Space Grotesk',sans-serif">${value ? fmt(Math.round(value)) : '₹0'}</span>
+        <span style="font-size:11px;color:var(--muted)">${nav ? 'NAV ₹' + Number(nav.nav).toLocaleString('en-IN', { maximumFractionDigits: 4 }) : 'NAV …'}${nav?.date ? ' · ' + nav.date : ''}</span>
+      </div>
+      ${pnl != null ? `<div style="font-size:12px;font-weight:800;margin-top:4px;color:${pnlColor(pnl)}">${fmtSigned(pnl)} · ${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%</div>` : ''}
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">AMFI scheme</span>
+        <input class="balance-input" style="width:110px" type="text" inputmode="numeric" value="${f.scheme}"
+          onchange="editFund('${f.id}','scheme',this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Units</span>
+        <input class="balance-input" type="text" inputmode="decimal" value="${units || ''}" placeholder="0"
+          onchange="saveUnits('${f.id}', this.value)" onblur="saveUnits('${f.id}', this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Invested cost ₹</span>
+        <input class="balance-input" type="text" inputmode="decimal" value="${invested ? invested : ''}" placeholder="from CAS"
+          onchange="saveCost('${f.id}', this.value)" onblur="saveCost('${f.id}', this.value)"/>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">Or set ₹ value</span>
+        <input class="balance-input" type="text" inputmode="decimal" placeholder="e.g. 575000"
+          onchange="saveFundRupees('${f.id}', this.value)" onblur="saveFundRupees('${f.id}', this.value)"/>
+      </div>
+      <button class="btn btn-outline-red" style="width:100%;margin-top:10px" onclick="deleteFund('${f.id}')">Delete folio</button>
+    </div>`;
+  });
+  document.getElementById('fundCards').innerHTML = html;
+}
+function saveUnits(id, val) {
+  const n = Number(String(val).replace(/[, ]/g, ''));
+  if (val !== '' && !Number.isFinite(n)) { showToast('Enter a valid unit count'); return; }
+  const h = getHoldings();
+  h[id] = val === '' ? 0 : n;
+  lsSave('mf_holdings', h);
+  renderFunds(); renderLiquid();
+  showToast('Units saved');
+}
+function saveFundRupees(id, val) {
+  if (!val) return;
+  const rupees = Number(String(val).replace(/[,₹ ]/g, ''));
+  const nav = Number(fundNavs[id]?.nav || 0);
+  if (!Number.isFinite(rupees) || rupees < 0) { showToast('Enter a valid amount'); return; }
+  if (!nav) { showToast('NAV not loaded yet'); return; }
+  const h = getHoldings();
+  h[id] = +(rupees / nav).toFixed(3);
+  lsSave('mf_holdings', h);
+  renderFunds(); renderLiquid();
+  showToast('Converted to units');
+}
+async function refreshFunds(manual) {
+  const cache = ls('mf_nav_cache', {});
+  fundNavs = cache && typeof cache === 'object' ? cache : {};
+  fundNavLive = false;
+  renderLiquid();
+  if (document.getElementById('page-funds').style.display !== 'none') renderFunds();
+  try {
+    const results = await Promise.allSettled(FUNDS.map(async f => {
+      const res = await fetch('https://api.mfapi.in/mf/' + f.scheme + '/latest');
+      if (!res.ok) throw new Error('nav');
+      const json = await res.json();
+      const row = json.data && json.data[0];
+      if (!row) throw new Error('empty');
+      return { id: f.id, nav: Number(row.nav), date: row.date };
+    }));
+    let ok = 0;
+    results.forEach((r, i) => {
+      if (r.status !== 'fulfilled') return;
+      fundNavs[FUNDS[i].id] = r.value;
+      ok += 1;
+    });
+    fundNavLive = ok === FUNDS.length;
+    if (ok) lsSave('mf_nav_cache', fundNavs);
+    renderLiquid();
+    if (document.getElementById('page-funds').style.display !== 'none') renderFunds();
+    if (manual) showToast(ok === FUNDS.length ? 'NAVs refreshed' : ok ? 'Partial NAV refresh' : 'Could not refresh');
+  } catch (e) {
+    fundNavLive = false;
+    renderLiquid();
+    if (document.getElementById('page-funds').style.display !== 'none') renderFunds();
+    if (manual) showToast('Could not refresh — using last NAVs');
+  }
+}
+function isoDaysAgo(days) {
+  const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - days);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + m + '-' + day;
+}
+function parseNavDate(s) {
+  const p = String(s || '').split('-');
+  if (p.length !== 3) return null;
+  return new Date(Number(p[2]), Number(p[1]) - 1, Number(p[0]));
+}
+function sniperPileEstimate() {
+  const elapsed = (today.getFullYear() - 2027) * 12 + today.getMonth() + 1;
+  if (elapsed <= 0) return 0;
+  const plan = getPlan();
+  const surplus = Math.max(0, surplusFrom(plan));
+  const sniper = surplus - Math.round(surplus * plan.equityPct / 100);
+  return sniper * elapsed;
+}
+function sniperSnapshot() {
+  const rows = INDEX_FUNDS.map(ix => {
+    const mark = indexMarks[ix.id];
+    return mark ? { ...ix, ...mark } : { ...ix, drop: null };
+  });
+  const ready = rows.filter(r => r.drop != null);
+  const leader = ready.slice().sort((a, b) => b.drop - a.drop)[0] || null;
+  const maxDrop = leader ? leader.drop : 0;
+  return {
+    rows,
+    leader: leader ? leader.name : '',
+    maxDrop,
+    open: maxDrop >= DROP_TRIGGER,
+    live: indexLive,
+    pile: sniperPileEstimate(),
+  };
+}
+function renderSniper() {
+  const snap = sniperSnapshot();
+  const card = document.getElementById('sniperCard');
+  const nifty = snap.rows.find(r => r.id === 'nifty');
+  const mid = snap.rows.find(r => r.id === 'midcap');
+  const line = (r) => {
+    if (r.drop == null) return r.name + ' …';
+    const col = r.drop >= DROP_TRIGGER ? 'var(--red)' : r.drop >= 7 ? 'var(--amber)' : 'var(--green)';
+    return `<span style="color:${col};font-weight:800">${r.name} ${r.drop >= 0 ? '−' : '+'}${Math.abs(r.drop).toFixed(1)}%</span>`;
+  };
+  const pile = snap.pile;
+  const pileTxt = pile > 0
+    ? 'Sniper pile ' + fmt(Math.round(pile)) + ' of ' + fmt(SNIPER_TARGET)
+    : 'Pile starts Jan 2027 · target ' + fmt(SNIPER_TARGET);
+  if (card) {
+    const deployed = sniperIsDeployed(snap);
+    if (snap.open && deployed) {
+      card.className = 'card ok';
+      card.innerHTML = `
+        <div class="cashflow-label" style="color:var(--green)">SNIPER DEPLOYED</div>
+        <div style="font-size:18px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--green);margin-top:6px">${fmt(SNIPER_TARGET)} marked used</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;color:#fff">${snap.leader} still ${snap.maxDrop.toFixed(1)}% below high</div>
+        <div class="live-row" style="margin-top:8px">${line(nifty)} · ${line(mid)}</div>
+        <button class="btn btn-outline-purple" style="width:100%;margin-top:10px" onclick="clearSniperDeployed()">Undo mark</button>`;
+    } else if (snap.open) {
+      card.className = 'card urgent';
+      card.innerHTML = `
+        <div class="cashflow-label" style="color:var(--red)">SNIPER WINDOW OPEN</div>
+        <div style="font-size:20px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--red);margin-top:6px">Deploy ${fmt(SNIPER_TARGET)}</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;color:#fff">${snap.leader} is ${snap.maxDrop.toFixed(1)}% below 52-week high</div>
+        <div class="live-row" style="margin-top:8px">${line(nifty)} · ${line(mid)}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">${pileTxt}${nifty && nifty.date ? ' · NAVs ' + nifty.date : ''}</div>
+        <button class="btn btn-confirm" style="width:100%;margin-top:10px" onclick="markSniperDeployed()">Mark ${fmt(SNIPER_TARGET)} deployed</button>`;
+    } else {
+      card.className = 'potential-card';
+      card.innerHTML = `
+        <div class="cashflow-label">SNIPER ARMED</div>
+        <div class="potential-row" style="margin-top:6px">
+          <span style="color:#fff;font-size:14px;font-weight:700">Deploys at ${DROP_TRIGGER}% off 52-week high</span>
+          <span style="color:var(--amber);font-weight:900;font-family:'Space Grotesk',sans-serif">${fmt(SNIPER_TARGET)}</span>
+        </div>
+        <div class="live-row">${nifty && nifty.drop != null ? line(nifty) + ' · ' + line(mid) : (indexLive ? 'Index NAVs loaded' : 'Fetching Nifty / Midcap…')}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">${pileTxt}</div>`;
+    }
+  }
+  const planBox = document.getElementById('planSniperStatus');
+  if (planBox) {
+    planBox.className = snap.open ? 'card urgent' : 'card';
+    planBox.style.marginBottom = '10px';
+    planBox.innerHTML = snap.open
+      ? `<div class="cashflow-label" style="color:var(--red)">SNIPER WINDOW OPEN</div>
+         <div style="font-size:14px;font-weight:800;margin-top:4px">Deploy the ₹10L fund · ${snap.leader} −${snap.maxDrop.toFixed(1)}%</div>
+         <div class="live-row">${nifty && nifty.drop != null ? line(nifty) + ' · ' + line(mid) : ''}</div>`
+      : `<div class="cashflow-label">SNIPER TRIGGER</div>
+         <div style="font-size:13px;font-weight:700;margin-top:4px;color:#fff">Armed · fires at ${DROP_TRIGGER}% off 52-week high</div>
+         <div class="live-row">${nifty && nifty.drop != null ? line(nifty) + ' · ' + line(mid) : 'Fetching indices…'}</div>`;
+  }
+  renderHeader();
+}
+async function refreshIndexes() {
+  const cache = ls('mf_index_cache', {});
+  indexMarks = cache && typeof cache === 'object' ? cache : {};
+  indexLive = false;
+  renderSniper();
+  const start = isoDaysAgo(370);
+  const end = isoDaysAgo(0);
+  try {
+    const results = await Promise.allSettled(INDEX_FUNDS.map(async ix => {
+      const res = await fetch('https://api.mfapi.in/mf/' + ix.scheme + '?startDate=' + start + '&endDate=' + end);
+      if (!res.ok) throw new Error('idx');
+      const json = await res.json();
+      const rows = (json.data || []).map(r => ({ date: r.date, nav: Number(r.nav), dt: parseNavDate(r.date) }))
+        .filter(r => r.nav > 0 && r.dt)
+        .sort((a, b) => a.dt - b.dt);
+      if (!rows.length) throw new Error('empty');
+      const current = rows[rows.length - 1];
+      const cutoff = new Date(current.dt.getTime() - 365 * 24 * 60 * 60 * 1000);
+      const window = rows.filter(r => r.dt >= cutoff);
+      const high = window.reduce((m, r) => r.nav > m.nav ? r : m, window[0]);
+      const drop = (high.nav - current.nav) / high.nav * 100;
+      return { id: ix.id, nav: current.nav, date: current.date, high: high.nav, highDate: high.date, drop };
+    }));
+    let ok = 0;
+    results.forEach((r) => {
+      if (r.status !== 'fulfilled') return;
+      indexMarks[r.value.id] = r.value;
+      ok += 1;
+    });
+    indexLive = ok === INDEX_FUNDS.length;
+    if (ok) lsSave('mf_index_cache', indexMarks);
+    renderSniper();
+    if (document.getElementById('page-alerts').style.display !== 'none') renderAlerts();
+  } catch (e) {
+    indexLive = false;
+    renderSniper();
+  }
+}
+function parseMoney(val) {
+  const n = Number(String(val ?? '').replace(/[,₹\s]/g, ''));
+  return Number.isFinite(n) ? n : 0;
+}
+function getPlan() {
+  const p = ls('plan_settings', {});
+  return {
+    equityPct: Number.isFinite(Number(p.equityPct)) ? Number(p.equityPct) : DEFAULT_EQUITY_PCT,
+    salary: Number.isFinite(Number(p.salary)) ? Number(p.salary) : DEFAULT_SALARY,
+  };
+}
+function surplusFrom(plan) {
+  return Math.round(plan.salary + rentFull() - emiTotal());
+}
+function monthsUntilYm(ym) {
+  const m = String(ym || '').match(/^(\d{4})-(\d{1,2})$/);
+  if (!m) return 99;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  return (y - today.getFullYear()) * 12 + (mo - 1 - today.getMonth());
+}
+function formatYm(ym) {
+  const m = String(ym || '').match(/^(\d{4})-(\d{1,2})$/);
+  if (!m) return ym || '—';
+  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return names[Number(m[2]) - 1] + ' ' + m[1];
+}
+function currentYm() {
+  return today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+}
+function earliestVacant() {
+  if (!VACANTS.length) return null;
+  return VACANTS.slice().sort((a, b) => monthsUntilYm(a.possession) - monthsUntilYm(b.possession))[0];
+}
+function engineMonthsLeft() {
+  const v = earliestVacant();
+  if (!v) return 0;
+  return Math.max(0, monthsUntilYm(v.possession));
+}
+function engineHeadline() {
+  const v = earliestVacant();
+  if (!v) return 'Live — all units occupied';
+  const mo = monthsUntilYm(v.possession);
+  if (mo <= 0) return 'Possession open · ' + v.property;
+  return mo + ' month' + (mo === 1 ? '' : 's') + ' · ' + formatYm(v.possession);
+}
+function monthsUntilJan2027() {
+  return engineMonthsLeft();
+}
+function sipFutureValue(pmt, annualPct, months) {
+  const r = annualPct / 12 / 100;
+  if (r === 0) return pmt * months;
+  return pmt * ((Math.pow(1 + r, months) - 1) / r);
+}
+function getRate(id) {
+  const rates = ls('loan_rates', {});
+  const loan = LOANS.find(l => l.id === id);
+  const n = Number(rates[id]);
+  return Number.isFinite(n) ? n : (loan ? loan.rate : 0);
+}
+function outstandingOf(id) {
+  return parseMoney(ls('loan_balances', {})[id]);
+}
+function amortize(principal, annualRate, emi, extra) {
+  let p = principal;
+  let interest = 0;
+  let months = 0;
+  const r = annualRate / 12 / 100;
+  const pay = emi + extra;
+  if (principal <= 0) return { interest: 0, months: 0, ok: true };
+  if (pay <= 0) return { interest: 0, months: 0, ok: false };
+  while (p > 1 && months < 480) {
+    const i = p * r;
+    if (pay <= i + 0.5) return { interest: Infinity, months: 480, ok: false };
+    const prin = Math.min(pay - i, p);
+    interest += i;
+    p -= prin;
+    months++;
+  }
+  return { interest, months, ok: true };
+}
+function highestRateLoan() {
+  const withBal = LOANS.map(l => ({ ...l, rateNow: getRate(l.id), bal: outstandingOf(l.id) }))
+    .filter(l => l.bal > 0);
+  if (!withBal.length) return null;
+  withBal.sort((a, b) => b.rateNow - a.rateNow || b.bal - a.bal);
+  return withBal[0];
+}
+function renderPlanPreview() {
+  const plan = getPlan();
+  const surplus = Math.max(0, surplusFrom(plan));
+  const sip = Math.round(surplus * plan.equityPct / 100);
+  const sniper = surplus - sip;
+  const sEl = document.getElementById('dashSurplus');
+  const sipEl = document.getElementById('dashSip');
+  const snEl = document.getElementById('dashSniper');
+  const bar = document.getElementById('dashSplitBar');
+  if (sEl) sEl.textContent = fmt(surplus);
+  if (sipEl) sipEl.textContent = 'SIP ' + fmt(sip);
+  if (snEl) snEl.textContent = 'Sniper ' + fmt(sniper);
+  if (bar) bar.innerHTML = `<div class="split-eq" style="width:${plan.equityPct}%"></div><div class="split-sn" style="width:${100 - plan.equityPct}%"></div>`;
+  const head = document.getElementById('dashEngineHead');
+  const lab = document.getElementById('dashEngineLabel');
+  const v = earliestVacant();
+  if (head) head.textContent = v ? ('SURPLUS FROM ' + formatYm(v.possession).toUpperCase()) : 'SURPLUS ENGINE — LIVE';
+  if (lab) lab.textContent = v ? 'MONTHLY SURPLUS AFTER POSSESSION' : 'MONTHLY SURPLUS — ALL UNITS ON RENT';
+}
+function onPlanSlider(val) {
+  const plan = getPlan();
+  plan.equityPct = Number(val);
+  lsSave('plan_settings', plan);
+  renderPlan();
+  renderPlanPreview();
+}
+function savePlanField(key, val) {
+  const plan = getPlan();
+  const n = parseMoney(val);
+  if (key === 'salary') plan.salary = n;
+  lsSave('plan_settings', plan);
+  renderPlan();
+  renderPlanPreview();
+  showToast('Plan saved');
+}
+function saveRate(id, val) {
+  const rates = ls('loan_rates', {});
+  const n = Number(String(val).replace(/[^0-9.]/g, ''));
+  if (!Number.isFinite(n)) { showToast('Enter a valid rate'); return; }
+  rates[id] = n;
+  lsSave('loan_rates', rates);
+  renderPlan();
+  showToast('Rate saved');
+}
+function renderPlan() {
+  const plan = getPlan();
+  const surplus = surplusFrom(plan);
+  const sip = Math.round(Math.max(0, surplus) * plan.equityPct / 100);
+  const sniper = Math.max(0, surplus) - sip;
+  const monthsLeft = engineMonthsLeft();
+  const salaryEl = document.getElementById('planSalary');
+  if (salaryEl && document.activeElement !== salaryEl) salaryEl.value = plan.salary.toLocaleString('en-IN');
+  document.getElementById('planCountdown').textContent = engineHeadline();
+  const pHead = document.getElementById('planEngineHead');
+  if (pHead) {
+    const v = earliestVacant();
+    pHead.textContent = v ? ('SURPLUS FROM ' + formatYm(v.possession).toUpperCase()) : 'SURPLUS — ALL UNITS OCCUPIED';
+  }
+  const pr = document.getElementById('planRentFull');
+  const pe = document.getElementById('planEmiTotal');
+  if (pr) pr.textContent = fmt(rentFull());
+  if (pe) pe.textContent = fmt(emiTotal());
+  document.getElementById('planSurplus').textContent = fmt(Math.max(0, surplus));
+  document.getElementById('planSurplus').style.color = surplus >= 0 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('planSplitLabel').textContent = plan.equityPct + ' / ' + (100 - plan.equityPct);
+  const slider = document.getElementById('planSlider');
+  if (slider) slider.value = String(plan.equityPct);
+  document.getElementById('planSplitBar').innerHTML =
+    `<div class="split-eq" style="width:${plan.equityPct}%"></div><div class="split-sn" style="width:${100 - plan.equityPct}%"></div>`;
+  document.getElementById('planSip').textContent = fmt(sip);
+  document.getElementById('planSniper').textContent = fmt(sniper);
+  const sipYear = Math.round(sipFutureValue(sip, 12, 12));
+  const sniperYear = sniper * 12;
+  document.getElementById('planSipYear').textContent = fmt(sipYear);
+  document.getElementById('planSniperYear').textContent = fmt(sniperYear);
+  document.getElementById('planCombinedYear').textContent = fmt(sipYear + sniperYear);
+
+  const target = highestRateLoan();
+  const prepay = document.getElementById('planPrepayCard');
+  if (!target) {
+    prepay.innerHTML = `<div style="font-size:14px;font-weight:700">No outstanding entered</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Add balances on the EMI tab. The engine then routes sniper (and 100% surplus) at the highest-rate loan and shows interest saved.</div>`;
+  } else {
+    const base = amortize(target.bal, target.rateNow, target.emi, 0);
+    const withSniper = amortize(target.bal, target.rateNow, target.emi, sniper);
+    const withAll = amortize(target.bal, target.rateNow, target.emi, Math.max(0, surplus));
+    const savedSn = base.ok && withSniper.ok ? Math.max(0, Math.round(base.interest - withSniper.interest)) : 0;
+    const savedAll = base.ok && withAll.ok ? Math.max(0, Math.round(base.interest - withAll.interest)) : 0;
+    const moSn = base.ok && withSniper.ok ? Math.max(0, base.months - withSniper.months) : 0;
+    const moAll = base.ok && withAll.ok ? Math.max(0, base.months - withAll.months) : 0;
+    prepay.innerHTML = `
+      <div class="cashflow-label">HIGHEST RATE · ${target.name.toUpperCase()}</div>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--muted);font-size:13px">Outstanding / rate</span>
+        <span style="font-weight:800;font-family:'Space Grotesk',sans-serif">${fmt(Math.round(target.bal))} · ${target.rateNow}%</span>
+      </div>
+      <div class="potential-row">
+        <span style="color:var(--muted);font-size:13px">Baseline remaining</span>
+        <span style="font-weight:700">${base.ok ? base.months + ' mo' : 'EMI too low'}</span>
+      </div>
+      <hr class="potential-divider"/>
+      <div class="potential-row">
+        <span style="color:var(--amber);font-size:13px">Sniper extra ${fmt(sniper)}/mo</span>
+        <span style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif">${fmt(savedSn)} saved</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${moSn} months shaved</div>
+      <div class="potential-row" style="margin-top:8px">
+        <span style="color:var(--green);font-size:13px">100% surplus extra ${fmt(Math.max(0, surplus))}/mo</span>
+        <span style="color:var(--green);font-weight:800;font-family:'Space Grotesk',sans-serif">${fmt(savedAll)} saved</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${moAll} months shaved</div>`;
+  }
+
+  let ratesHtml = '';
+  LOANS.forEach(l => {
+    const rate = getRate(l.id);
+    const bal = outstandingOf(l.id);
+    ratesHtml += `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#fff">${l.name}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Outstanding ${bal ? fmt(Math.round(bal)) : 'not set'} · EMI ${fmt(l.emi)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700">RATE %</div>
+          <input class="balance-input" style="width:72px" type="text" inputmode="decimal" value="${rate}"
+            onchange="saveRate('${l.id}', this.value)" onblur="saveRate('${l.id}', this.value)"/>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('planRateCards').innerHTML = ratesHtml;
+  renderPlanPreview();
+  renderSniper();
+}
+function sniperWindowKey(snap) {
+  return (snap.leader || '') + ':' + (indexMarks.nifty && indexMarks.nifty.highDate ? indexMarks.nifty.highDate : '');
+}
+function sniperIsDeployed(snap) {
+  const d = ls('sniper_deployed', null);
+  if (!d || !snap || !snap.open) return false;
+  return d.key === sniperWindowKey(snap);
+}
+function markSniperDeployed() {
+  const snap = sniperSnapshot();
+  lsSave('sniper_deployed', { at: Date.now(), key: sniperWindowKey(snap), drop: snap.maxDrop });
+  renderSniper();
+  if (document.getElementById('page-alerts').style.display !== 'none') renderAlerts();
+  showToast('Sniper marked deployed');
+}
+function clearSniperDeployed() {
+  lsSave('sniper_deployed', null);
+  renderSniper();
+  showToast('Deploy mark cleared');
+}
+function editLoan(id, field, val) {
+  const l = LOANS.find(x => x.id === id);
+  if (!l) return;
+  if (field === 'name') l.name = String(val).trim() || l.name;
+  if (field === 'emi') l.emi = Math.max(0, Math.round(parseMoney(val)));
+  if (field === 'dueDate') l.dueDate = Math.min(28, Math.max(1, parseInt(val, 10) || l.dueDate));
+  persistPortfolio();
+  refreshAll();
+  showToast('Loan saved');
+}
+function deleteLoan(id) {
+  if (LOANS.length < 2) { showToast('Keep at least one loan'); return; }
+  if (!confirm('Delete this loan?')) return;
+  LOANS = LOANS.filter(l => l.id !== id);
+  persistPortfolio();
+  refreshAll();
+  showToast('Loan deleted');
+}
+function addLoan() {
+  const colors = ['#7C6EFA','#00D9A5','#FFB830','#FF4D6D','#3D9EFF'];
+  LOANS.push({ id: 'l' + Date.now(), name: 'New loan', dueDate: 5, emi: 0, color: colors[LOANS.length % 5], rate: 9 });
+  persistPortfolio();
+  refreshAll();
+  showTab('emi');
+  showToast('Loan added — set EMI and due date');
+}
+function editTenant(id, field, val) {
+  const t = TENANTS.find(x => x.id === id);
+  if (!t) return;
+  if (field === 'property' || field === 'tenant') t[field] = String(val).trim() || t[field];
+  if (field === 'rent') t.rent = Math.max(0, Math.round(parseMoney(val)));
+  if (field === 'dueStart' || field === 'dueEnd') t[field] = Math.min(28, Math.max(1, parseInt(val, 10) || t[field]));
+  persistPortfolio();
+  refreshAll();
+  showToast('Rent saved');
+}
+function deleteTenant(id) {
+  if (!confirm('Delete this tenant?')) return;
+  TENANTS = TENANTS.filter(t => t.id !== id);
+  persistPortfolio();
+  refreshAll();
+  showToast('Tenant deleted');
+}
+function addTenant() {
+  TENANTS.push({ id: 't' + Date.now(), property: 'New property', tenant: 'Tenant', rent: 0, dueStart: 1, dueEnd: 5 });
+  persistPortfolio();
+  refreshAll();
+  showTab('rent');
+  showToast('Tenant added');
+}
+function editVacant(id, field, val) {
+  const v = VACANTS.find(x => x.id === id);
+  if (!v) return;
+  if (field === 'property' || field === 'tenant') v[field] = String(val).trim();
+  if (field === 'expectedRent') v.expectedRent = Math.max(0, Math.round(parseMoney(val)));
+  if (field === 'possession') {
+    const s = String(val).trim();
+    if (!/^\d{4}-\d{1,2}$/.test(s)) { showToast('Use YYYY-MM e.g. 2027-01'); return; }
+    const mm = s.replace(/^(\d{4})-(\d{1,2})$/, (_, y, m) => y + '-' + String(m).padStart(2, '0'));
+    v.possession = mm;
+  }
+  if (field === 'dueStart' || field === 'dueEnd') v[field] = Math.min(28, Math.max(1, parseInt(val, 10) || v[field]));
+  persistPortfolio();
+  refreshAll();
+  showToast('Vacant unit saved');
+}
+function occupyVacant(id) {
+  const v = VACANTS.find(x => x.id === id);
+  if (!v) return;
+  const name = (v.tenant || '').trim() || ('Tenant · ' + v.property);
+  const nextRent = rentNow() + Number(v.expectedRent || 0);
+  if (!confirm('Start renting ' + v.property + ' to ' + name + ' at ' + fmt(v.expectedRent) + '/mo?\n\nCurrent rent becomes ' + fmt(nextRent) + '.')) return;
+  TENANTS.push({
+    id: v.id,
+    property: v.property,
+    tenant: name,
+    rent: Number(v.expectedRent || 0),
+    dueStart: v.dueStart || 1,
+    dueEnd: v.dueEnd || 5,
+  });
+  VACANTS = VACANTS.filter(x => x.id !== id);
+  persistPortfolio();
+  refreshAll();
+  showTab('rent');
+  showToast(v.property + ' is now on the live rent roll');
+}
+function vacateTenant(id) {
+  const t = TENANTS.find(x => x.id === id);
+  if (!t) return;
+  if (!confirm('Move ' + t.property + ' back to vacant? Current rent drops by ' + fmt(t.rent) + '.')) return;
+  VACANTS.push({
+    id: t.id,
+    property: t.property,
+    expectedRent: Number(t.rent || 0),
+    possession: currentYm(),
+    tenant: t.tenant || '',
+    dueStart: t.dueStart || 1,
+    dueEnd: t.dueEnd || 5,
+  });
+  TENANTS = TENANTS.filter(x => x.id !== id);
+  persistPortfolio();
+  refreshAll();
+  showTab('rent');
+  showToast(t.property + ' moved to vacant');
+}
+function addVacant() {
+  VACANTS.push({
+    id: 'v' + Date.now(),
+    property: 'New vacant unit',
+    expectedRent: 0,
+    possession: '2027-01',
+    tenant: '',
+    dueStart: 1,
+    dueEnd: 5,
+  });
+  persistPortfolio();
+  refreshAll();
+  showTab('rent');
+  showToast('Vacant unit added');
+}
+function deleteVacant(id) {
+  if (!confirm('Delete this vacant unit?')) return;
+  VACANTS = VACANTS.filter(v => v.id !== id);
+  persistPortfolio();
+  refreshAll();
+  showToast('Vacant unit deleted');
+}
+function editFund(id, field, val) {
+  const f = FUNDS.find(x => x.id === id);
+  if (!f) return;
+  if (field === 'name') f.name = String(val).trim() || f.name;
+  if (field === 'scheme') {
+    const n = parseInt(String(val).replace(/\D/g, ''), 10);
+    if (!n) { showToast('Enter a valid AMFI code'); return; }
+    f.scheme = n;
+    persistPortfolio();
+    refreshFunds(true);
+    showToast('Scheme saved — refreshing NAV');
+    return;
+  }
+  persistPortfolio();
+  renderFunds();
+  showToast('Folio saved');
+}
+function deleteFund(id) {
+  if (FUNDS.length < 1) return;
+  if (!confirm('Delete this folio?')) return;
+  FUNDS = FUNDS.filter(f => f.id !== id);
+  persistPortfolio();
+  renderFunds(); renderLiquid();
+  showToast('Folio deleted');
+}
+function addFund() {
+  const colors = ['#7C6EFA','#00D9A5','#FFB830','#FF4D6D','#3D9EFF'];
+  const id = 'f' + Date.now();
+  FUNDS.push({ id, name: 'New folio', scheme: 122639, color: colors[FUNDS.length % 5], seedUnits: 0 });
+  persistPortfolio();
+  renderFunds();
+  showTab('funds');
+  showToast('Folio added — set AMFI scheme + units');
+}
+function editSetting(key, val) {
+  if (key === 'dropTrigger') DROP_TRIGGER = Math.min(40, Math.max(1, Number(val) || DROP_TRIGGER));
+  if (key === 'sniperTarget') SNIPER_TARGET = Math.max(0, Math.round(parseMoney(val)) || SNIPER_TARGET);
+  persistPortfolio();
+  refreshAll();
+  showToast('Setting saved');
+}
+function exportBackup() {
+  const dump = { v: 1, exportedAt: new Date().toISOString() };
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    try { dump[k] = JSON.parse(localStorage.getItem(k)); } catch { dump[k] = localStorage.getItem(k); }
+  }
+  const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'sanas-command-centre-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Backup downloaded');
+}
+function importBackup(ev) {
+  const file = ev.target.files && ev.target.files[0];
+  ev.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const dump = JSON.parse(reader.result);
+      if (!dump || typeof dump !== 'object') throw new Error('bad');
+      Object.keys(dump).forEach(k => {
+        if (k === 'v' || k === 'exportedAt') return;
+        lsSave(k, dump[k]);
+      });
+      hydratePortfolio();
+      refreshAll();
+      refreshFunds(false);
+      refreshIndexes();
+      showToast('Backup restored');
+    } catch (e) {
+      showToast('Could not read that JSON');
+    }
+  };
+  reader.readAsText(file);
+}
+function restoreSeed() {
+  if (!confirm('Restore original loans, rents and funds? Holdings and month ticks stay unless you reset the month.')) return;
+  LOANS = JSON.parse(JSON.stringify(SEED.loans));
+  TENANTS = JSON.parse(JSON.stringify(SEED.tenants));
+  VACANTS = JSON.parse(JSON.stringify(SEED.vacants));
+  FUNDS = JSON.parse(JSON.stringify(SEED.funds));
+  DROP_TRIGGER = SEED.dropTrigger;
+  SNIPER_TARGET = SEED.sniperTarget;
+  persistPortfolio();
+  refreshAll();
+  refreshFunds(false);
+  showToast('Original portfolio restored');
+}
+hydratePortfolio();
+shapeVacants();
+ensurePrevArchived();
+renderHeader();
+renderDashboard();
+renderEmi();
+renderRent();
+renderPlanPreview();
+refreshFunds(false);
+refreshIndexes();
+</script>
+</body>
+</html>

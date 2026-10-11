@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For you — a vacation, because you deserve it</title>
+  <meta name="description" content="A letter, and eight slow trips from Mumbai for the last week of October." />
+  <meta name="theme-color" content="#f3ebdf" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,640&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#f3ebdf; --surface:#fffaf3; --ink:#2a2118; --muted:#6f6458; --line:#e3d5c4; --accent:#b5523a; --on:#fff7f2; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Outfit, ui-sans-serif, system-ui, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    h1,h2,h3 { font-family: Fraunces, ui-serif, Georgia, serif; font-weight: 520; text-wrap: balance; letter-spacing: -0.02em; }
+    p { text-wrap: pretty; }
+    a { color: inherit; }
+    header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .bar { max-width: 72rem; margin: 0 auto; padding: 1rem 1.25rem 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+    .brand { font-family: Fraunces, serif; font-size: 1.5rem; text-decoration: none; }
+    .when-line { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    nav { max-width: 72rem; margin: 0.6rem auto 0; padding: 0 0.75rem 0.75rem; display: flex; gap: 0.25rem; overflow-x: auto; }
+    nav a { text-decoration: none; border-radius: 999px; padding: 0.5rem 0.75rem; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
+    nav a:hover { background: var(--surface); }
+    main { max-width: 72rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    .letter { max-width: 46rem; }
+    .kicker { color: var(--accent); font-size: 0.9rem; font-weight: 600; margin: 0; }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.1; margin: 0.7rem 0 0; }
+    h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.1; margin: 0.35rem 0 0; }
+    .portrait { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 1rem; border: 1px solid var(--line); margin-top: 1.5rem; }
+    .prose { font-family: Fraunces, serif; font-size: clamp(1.2rem, 2vw, 1.45rem); }
+    .prose p { margin: 1rem 0; }
+    .sign { font-family: Fraunces, serif; font-size: 1.5rem; margin: 1.5rem 0 0; }
+    .sign em { color: var(--accent); font-style: normal; }
+    .cards { display: grid; gap: 1rem; margin-top: 1.5rem; }
+    @media (min-width: 700px) { .cards { grid-template-columns: 1fr 1fr; } nav { flex-wrap: wrap; overflow: visible; } }
+    .card-link { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; overflow: hidden; text-decoration: none; min-height: 100%; }
+    .card-link img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+    .card-link div { padding: 1.1rem 1.15rem 1.2rem; }
+    .card-link h3 { margin: 0.15rem 0 0; font-size: 1.8rem; }
+    .muted { color: var(--muted); }
+    .num { font-variant-numeric: tabular-nums; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); min-width: 40rem; }
+    th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); font-weight: 400; }
+    thead th { color: var(--muted); font-size: 0.85rem; }
+    .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 1rem; margin-top: 1rem; }
+    .place { margin-top: 4.5rem; padding-top: 1rem; }
+    .lede { color: var(--muted); font-size: 1.1rem; margin-top: 0.4rem; }
+    .hero { position: relative; margin: 1.25rem 0 0; }
+    .hero img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 1rem; display: block; }
+    .hero figcaption { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 3.5rem 1.25rem 1.25rem; border-radius: 0 0 1rem 1rem; background: linear-gradient(to top, rgba(42,33,24,0.92), rgba(42,33,24,0.55), transparent); color: var(--bg); font-family: Fraunces, serif; font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.25; }
+    .costs { display: grid; gap: 0.75rem; margin-top: 1rem; }
+    @media (min-width: 800px) { .costs { grid-template-columns: 1fr 1fr 1fr; } .hero img { aspect-ratio: 2/1; } }
+    .costs article, .card { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; padding: 1.1rem 1.15rem; }
+    .costs .label, .card h3 { margin: 0; }
+    .costs .figure { font-family: Fraunces, serif; font-size: 1.7rem; margin: 0.35rem 0; }
+    .costs p, .card p, .lines p, .day p { color: var(--muted); font-size: 0.95rem; }
+    .costs .total { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .costs .total p { color: color-mix(in srgb, var(--bg) 75%, transparent); }
+    .split-layout { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+    @media (min-width: 980px) { .split-layout { grid-template-columns: 1.4fr 0.8fr; align-items: start; } }
+    .block-title { font-size: 1.8rem; margin: 0; }
+    .note { color: var(--muted); font-size: 0.92rem; }
+    .days { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.8rem; }
+    .day { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; padding: 1.1rem 1.15rem; }
+    .day h3 { margin: 0.15rem 0; font-size: 1.45rem; }
+    .where { margin-top: 0; }
+    .when { color: var(--ink); font-weight: 600; font-size: 0.92rem; margin: 0.85rem 0 0.15rem; }
+    aside { display: grid; gap: 0.75rem; }
+    .card h3 { font-size: 1.35rem; }
+    .strong { color: var(--ink); font-weight: 600; }
+    .lines { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+    .lines li { padding: 0.7rem 0; border-top: 1px solid var(--line); }
+    .split { display: flex; justify-content: space-between; gap: 0.75rem; }
+    .card.accent { background: var(--accent); color: var(--on); border-color: var(--accent); }
+    .card.accent p { color: var(--on); }
+    .know { padding: 0; margin: 0.8rem 0 0; list-style: none; max-width: 46rem; }
+    .know li { border-left: 2px solid var(--accent); padding: 0.15rem 0 0.15rem 0.9rem; margin: 0.7rem 0; color: var(--muted); }
+    footer { border-top: 1px solid var(--line); }
+    footer p { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1.25rem 2.5rem; color: var(--muted); font-size: 0.92rem; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href="#letter">For you</a>
+      <p class="when-line">Last week of October · from Mumbai</p>
+    </div>
+    <nav aria-label="Places"><a href="#letter">A letter</a><a href="#thailand">Thailand</a><a href="#sri-lanka">Sri Lanka</a><a href="#vietnam">Vietnam</a><a href="#nepal">Nepal</a><a href="#uae">UAE</a><a href="#lakshadweep">Lakshadweep</a><a href="#andaman">Andaman</a><a href="#oman">Oman</a></nav>
+  </header>
+  <main>
+    <article class="letter" id="letter">
+      <p class="kicker">A note I did not want to leave in a chat</p>
+      <h1>You deserve a week that asks nothing of you.</h1>
+      <img class="portrait" src="photos/letter.jpg" alt="A quiet table with coffee, a blank notebook, jasmine and a pen in afternoon light" />
+      <div class="prose">
+        <p>I have been thinking about how much you hold. The days that run long. The things you do without being asked. The way you make ordinary life feel like somewhere I want to be.</p>
+        <p>This is not a hint. It is a gift. I want to take you away in the last week of October, just us, leaving from Mumbai. No occasion you have to earn. You deserve the vacation because you are you, and because I love you. Not the busy version of you. Not the one who is always making sure everyone else is fine. You.</p>
+        <p>I looked at eight places. A river city, a fort on the sea, mist in Vietnam, the clearest mountains Nepal gets, a desert at sunset, and islands that are almost unreasonable. Each one is four days, paced slowly, with an honest guess at the flights and what the days would cost for both of us.</p>
+        <p>Pick the one that makes you exhale. Or do not pick yet. Just know the trip is yours, and I am already happy we are going together.</p>
+      </div>
+      <p class="sign">Always,<br /><em>Your husband</em></p>
+    </article>
+
+    <section style="margin-top:3.5rem">
+      <h2>Eight ways to disappear for four days</h2>
+      <p class="muted">The gentlest yes is Oman, Sri Lanka or Nepal. The water, if you do not mind a longer journey, is Andaman or Lakshadweep. Every figure is for both of us.</p>
+      <div class="cards">
+        <a class="card-link" href="#thailand"><img src="photos/thailand.jpg" alt="Wat Arun and a longtail boat on the Chao Phraya at blue hour" /><div><p class="kicker">Bangkok &amp; Ayutthaya</p><h3>Thailand</h3><p class="muted">Direct from Mumbai, a river, a long massage, and ruins that are finished by lunch. Not a party trip.</p><p class="num"><strong>Flights ₹44,000–64,000</strong></p><p class="muted">Whole trip, about <span class="num">₹83,000–1,26,000</span></p></div></a><a class="card-link" href="#sri-lanka"><img src="photos/srilanka.jpg" alt="Galle Fort ramparts and the lighthouse at sunset over the Indian Ocean" /><div><p class="kicker">Bentota &amp; Galle Fort</p><h3>Sri Lanka</h3><p class="muted">A short flight, then the southwest coast. A fort to sleep inside, and a beach that does not need a plan.</p><p class="num"><strong>Flights ₹36,000–56,000</strong></p><p class="muted">Whole trip, about <span class="num">₹86,000–1,38,000</span></p></div></a><a class="card-link" href="#vietnam"><img src="photos/vietnam.jpg" alt="A wooden boat on still water among limestone karsts and rice paddies at sunrise" /><div><p class="kicker">Hanoi &amp; Ninh Binh</p><h3>Vietnam</h3><p class="muted">The right Vietnam for the last week of October. Cooler air, egg coffee, and a night in the rice fields.</p><p class="num"><strong>Flights ₹44,000–68,000</strong></p><p class="muted">Whole trip, about <span class="num">₹88,000–1,43,000</span></p></div></a><a class="card-link" href="#nepal"><img src="photos/nepal.jpg" alt="Sunrise on the Himalayan range above a dark ridge" /><div><p class="kicker">Kathmandu Valley &amp; Nagarkot</p><h3>Nepal</h3><p class="muted">A short flight, no visa, and a sunrise you can actually see. October is when Nepal keeps its promise.</p><p class="num"><strong>Flights ₹30,000–52,000</strong></p><p class="muted">Whole trip, about <span class="num">₹66,000–1,13,000</span></p></div></a><a class="card-link" href="#uae"><img src="photos/uae.jpg" alt="Two glasses on a linen cloth in the Dubai dunes at sunset" /><div><p class="kicker">Dubai, slowly</p><h3>UAE</h3><p class="muted">The easiest international hop on this list after Colombo. We will not try to see all of Dubai. We will swim, wander the old town, and watch the desert go gold.</p><p class="num"><strong>Flights ₹36,000–60,000</strong></p><p class="muted">Whole trip, about <span class="num">₹1,02,000–1,69,000</span></p></div></a><a class="card-link" href="#lakshadweep"><img src="photos/lakshadweep.jpg" alt="A shallow turquoise lagoon, white sand and coconut palms in Lakshadweep" /><div><p class="kicker">Agatti</p><h3>Lakshadweep</h3><p class="muted">The most ‘you deserve this’ water on the list. Also the most fragile to book: few flights, a permit, and a resort that is the whole island evening.</p><p class="num"><strong>Flights ₹56,000–96,000</strong></p><p class="muted">Whole trip, about <span class="num">₹1,04,000–1,87,000</span></p></div></a><a class="card-link" href="#andaman"><img src="photos/andaman.jpg" alt="A long curve of pale sand and turquoise water at Radhanagar Beach" /><div><p class="kicker">Port Blair &amp; Swaraj Dweep</p><h3>Andaman</h3><p class="muted">Havelock, which the maps now call Swaraj Dweep, and Radhanagar. A domestic trip that feels much further than it is.</p><p class="num"><strong>Flights ₹48,000–68,000</strong></p><p class="muted">Whole trip, about <span class="num">₹1,01,000–1,59,000</span></p></div></a><a class="card-link" href="#oman"><img src="photos/oman.jpg" alt="Mutrah fort above the harbor in Muscat at dusk, mountains behind" /><div><p class="kicker">Muscat &amp; Wadi Shab</p><h3>Oman</h3><p class="muted">A short flight into a country that still feels like a place, not a circuit. Mountains behind the corniche, and a swim inside a wadi.</p><p class="num"><strong>Flights ₹32,000–52,000</strong></p><p class="muted">Whole trip, about <span class="num">₹89,000–1,45,000</span></p></div></a>
+      </div>
+    </section>
+
+    <section style="margin-top:3rem">
+      <h2>At a glance</h2>
+      <p class="muted">Four days, three nights, two of us. Totals include visas where a fee is likely.</p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Place</th><th>Flights</th><th>On the ground</th><th>Visa</th><th>Rough total</th></tr></thead>
+          <tbody><tr>
+      <th><a href="#thailand">Thailand</a></th>
+      <td class="num">₹44,000–64,000</td>
+      <td class="num">₹39,000–62,000</td>
+      <td class="num">None</td>
+      <td class="num"><strong>₹83,000–1,26,000</strong></td>
+    </tr><tr>
+      <th><a href="#sri-lanka">Sri Lanka</a></th>
+      <td class="num">₹36,000–56,000</td>
+      <td class="num">₹44,000–70,000</td>
+      <td class="num">₹6,000–12,000</td>
+      <td class="num"><strong>₹86,000–1,38,000</strong></td>
+    </tr><tr>
+      <th><a href="#vietnam">Vietnam</a></th>
+      <td class="num">₹44,000–68,000</td>
+      <td class="num">₹39,000–65,000</td>
+      <td class="num">₹5,000–10,000</td>
+      <td class="num"><strong>₹88,000–1,43,000</strong></td>
+    </tr><tr>
+      <th><a href="#nepal">Nepal</a></th>
+      <td class="num">₹30,000–52,000</td>
+      <td class="num">₹36,000–61,000</td>
+      <td class="num">None</td>
+      <td class="num"><strong>₹66,000–1,13,000</strong></td>
+    </tr><tr>
+      <th><a href="#uae">UAE</a></th>
+      <td class="num">₹36,000–60,000</td>
+      <td class="num">₹54,000–91,000</td>
+      <td class="num">₹12,000–18,000</td>
+      <td class="num"><strong>₹1,02,000–1,69,000</strong></td>
+    </tr><tr>
+      <th><a href="#lakshadweep">Lakshadweep</a></th>
+      <td class="num">₹56,000–96,000</td>
+      <td class="num">₹48,000–91,000</td>
+      <td class="num">None</td>
+      <td class="num"><strong>₹1,04,000–1,87,000</strong></td>
+    </tr><tr>
+      <th><a href="#andaman">Andaman</a></th>
+      <td class="num">₹48,000–68,000</td>
+      <td class="num">₹53,000–91,000</td>
+      <td class="num">None</td>
+      <td class="num"><strong>₹1,01,000–1,59,000</strong></td>
+    </tr><tr>
+      <th><a href="#oman">Oman</a></th>
+      <td class="num">₹32,000–52,000</td>
+      <td class="num">₹48,000–79,000</td>
+      <td class="num">₹9,000–14,000</td>
+      <td class="num"><strong>₹89,000–1,45,000</strong></td>
+    </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="thailand" class="place">
+      <p class="kicker">A city that lets you be slow</p>
+      <h2>Thailand</h2>
+      <p class="lede">Bangkok &amp; Ayutthaya</p>
+      <figure class="hero">
+        <img src="photos/thailand.jpg" alt="Wat Arun and a longtail boat on the Chao Phraya at blue hour" />
+        <figcaption>Direct from Mumbai, a river, a long massage, and ruins that are finished by lunch. Not a party trip.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹44,000–64,000</p><p>₹22,000–32,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹39,000–62,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹83,000–1,26,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>Land, and stop</h3><p class="where">Bang Rak, by the river</p><div><p class="when">Morning</p><p>If the flight is a morning departure from Mumbai you are in Bangkok by early afternoon. A pre-booked car, not the scramble at arrivals. Check in even if the room is not ready. Leave the bags.</p></div><div><p class="when">Afternoon</p><p>Nothing with a ticket. A shower, the river from the window, a nap if the night was short. If you want air, walk Pak Khlong flower market for twenty minutes and leave.</p></div><div><p class="when">Evening</p><p>One riverside terrace for a drink you can hear each other over, then a real Thai dinner in Bang Rak. Not a rooftop with a queue and a DJ. Sleep.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>The river, then hands</h3><p class="where">Wat Arun, Wat Pho, and a massage</p><div><p class="when">Morning</p><p>Public boat up the Chao Phraya while the light is still kind. Wat Arun from the water, then Wat Pho for the reclining Buddha. One hour inside, not a temple marathon. Skip the Grand Palace if the line is already ugly.</p></div><div><p class="when">Afternoon</p><p>This is the point of the day. A proper 90-minute Thai massage, booked, not waved at from the street. Then nothing. The hotel, or a cafe with cold towels.</p></div><div><p class="when">Evening</p><p>Yaowarat after six. One seafood stall, one quiet bar, home before it turns loud. Chinatown is a walk, not a mission.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>Ruins, then the pool</h3><p class="where">Ayutthaya</p><div><p class="when">Morning</p><p>A private car, about an hour and a half. Two sites only: Wat Chaiwatthanaram by the river, and Wat Mahathat. Done before the heat sits on you. River prawns for lunch in town.</p></div><div><p class="when">Afternoon</p><p>Back in Bangkok by four. The pool, or the room, or both. Do not add a mall.</p></div><div><p class="when">Evening</p><p>A dinner you reserved before you flew. Somewhere you can sit for two hours. That is the celebration. No show, no club.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>One last soft morning</h3><p class="where">Charoenkrung, then the airport</p><div><p class="when">Morning</p><p>Coffee and a slow walk through Talat Noi and the old shophouses of Charoenkrung. Buy nothing unless it is for her, and even then, only if she points.</p></div><div><p class="when">Afternoon</p><p>Bangkok traffic is the real itinerary item. For an evening flight, leave the hotel three and a half hours before departure. Lunch near the hotel, not at the airport.</p></div><div><p class="when">Evening</p><p>If the flight is a morning one, this day does not exist. Protect Day 2 anyway. The massage matters more than a last temple.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Bangkok (BKK)</p><p>About 4 hours 15 minutes, often nonstop</p><p>IndiGo, Thai, Thai VietJet and Air India all fly this. A few October one-ways were advertised from the mid-teens of thousands; a round trip this close to departure, with a bag, sits higher. Suvarnabhumi, not Don Mueang, if you want the smoother arrival.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">No visa for a short stay</p><p class="num">No fee in this plan</p><p>Indian passport holders are on Thailand’s 30-day visa-exemption list for tourism (updated in September 2026). Carry a passport with six months left, a return ticket, and proof of a hotel. Recheck the week you fly.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights</strong><span class="num">₹20,000–32,000</span></div><p>A quiet boutique on the river or in Bang Rak. Not a mall hotel, not a hostel.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹9,000–14,000</span></div><p>Street breakfasts, one proper dinner a night, mango sticky rice without guilt.</p></li><li><div class="split"><strong>Getting around</strong><span class="num">₹4,000–7,000</span></div><p>Airport car both ways, river boats, a couple of taxis. Skip the rented scooter.</p></li><li><div class="split"><strong>The good bits</strong><span class="num">₹6,000–9,000</span></div><p>Ayutthaya by private car, two temple entries, a 90-minute massage.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>The Andaman coast (Phuket, Krabi) is still in its rainy shoulder in late October. Bangkok handles a shower. If you want a beach instead, Koh Samui has better weather this week, but it adds a hop from Bangkok and about ₹12,000–20,000 a person on top.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>Hold the flights first. Book the riverside room and the Ayutthaya car the same day so Day 3 is not a negotiation.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Late October is warm and humid, with a short shower some afternoons. Pack a light layer for restaurants, not a raincoat holiday.</li><li>The BTS and boats are easy. A rented bike in Bangkok traffic is not a gift.</li><li>Dress with covered shoulders for temples. A scarf in the day bag is enough.</li></ul>
+    </section>
+<section id="sri-lanka" class="place">
+      <p class="kicker">The sea, a rampart, a slow car</p>
+      <h2>Sri Lanka</h2>
+      <p class="lede">Bentota &amp; Galle Fort</p>
+      <figure class="hero">
+        <img src="photos/srilanka.jpg" alt="Galle Fort ramparts and the lighthouse at sunset over the Indian Ocean" />
+        <figcaption>A short flight, then the southwest coast. A fort to sleep inside, and a beach that does not need a plan.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹36,000–56,000</p><p>₹18,000–28,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹44,000–70,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹86,000–1,38,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>South, with one swim</h3><p class="where">Colombo airport to Galle</p><div><p class="when">Morning</p><p>Land at Bandaranaike. Your driver is named and waiting. Do not linger in Colombo. The coast is the trip.</p></div><div><p class="when">Afternoon</p><p>Stop in Bentota long enough to swim and eat with sand on your ankles. Then continue to Galle. The drive is the scenery. No extra stops that turn it into a checklist.</p></div><div><p class="when">Evening</p><p>Check into the fort. Walk the ramparts at sunset, lighthouse end, ocean on one side and the cricket ground on the other. Dinner in a courtyard inside the walls.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>The fort, then a beach</h3><p class="where">Galle and Unawatuna</p><div><p class="when">Morning</p><p>No alarm you did not choose. Coffee, Pedlar Street, the Dutch church, a bookstore. The fort is small. Getting lost is the activity.</p></div><div><p class="when">Afternoon</p><p>Unawatuna or Jungle Beach for a long swim. Come back before you are tired of it. A shower in the fort is part of the pleasure.</p></div><div><p class="when">Evening</p><p>The walls again, because they are different after dark. A slow dinner. Nothing scheduled after nine.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>A little further, then home</h3><p class="where">The south coast</p><div><p class="when">Morning</p><p>A cooking class in or near the fort, or a short drive to Koggala. If you pass the stilt fishermen, watch from the road. Do not climb onto their poles for a photo.</p></div><div><p class="when">Afternoon</p><p>Back to the room. Read. This day is allowed to be half empty. That is the vacation.</p></div><div><p class="when">Evening</p><p>One nicer dinner than last night, still inside the fort so you can walk home.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>The drive back</h3><p class="where">Galle to Colombo airport</p><div><p class="when">Morning</p><p>Breakfast on a terrace. Leave with time. The coastal road back is about two and a half to three hours before airport queues, more if you stop.</p></div><div><p class="when">Afternoon</p><p>If the flight is late, one lunch in Colombo is enough — the Dutch Hospital precinct, then straight to the airport. Three hours before an international departure.</p></div><div><p class="when">Evening</p><p>If you fly in the evening, the morning in Galle is the luxury. Do not trade it for a Colombo sightseeing tour.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Colombo (CMB)</p><p>About 2 hours 50 minutes, nonstop</p><p>SriLankan and IndiGo. One of the easiest flights on this list. Mid-October direct fares were sitting a little above ₹20,000 return on some dates; the last week, booked late, is the top half of this range.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">ETA before you fly</p><p class="num">₹6,000–12,000 for both of us</p><p>Tourist ETA, often a 30-day double entry, applied online. Budget about ₹3,000–6,000 a person. Rules and the fee have changed more than once, so confirm on the official ETA site the week you book, and carry the approval plus a return ticket.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Car and driver</strong><span class="num">₹14,000–20,000</span></div><p>Airport to the coast and three unhurried days. The train is lovely and the wrong tool if you have a flight to catch.</p></li><li><div class="split"><strong>Three nights</strong><span class="num">₹18,000–30,000</span></div><p>A house inside Galle Fort, or one night Bentota and two in the fort if you want a proper swim on arrival.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹8,000–12,000</span></div><p>Hoppers in the morning, a courtyard dinner, crab if she wants a feast.</p></li><li><div class="split"><strong>Entries and a class</strong><span class="num">₹4,000–8,000</span></div><p>Fort ramparts are free. A cooking morning or a quiet boat in the mangroves, not a packed tour.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>The southwest monsoon is over. Late October on this coast is a shoulder: mostly bright, a shower possible, sea swimmable. The east coast starts to turn with the other monsoon. Whale-watching off Mirissa is a November-to-April season, so it is not promised here.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>ETA and the flight on the same evening. Then the fort room. The driver can be arranged by the hotel.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Carry cash rupees or Sri Lankan rupees for smaller kitchens. Cards work in the fort, less so on the beach.</li><li>A scarf or a shirt with sleeves lives in the bag for the occasional temple.</li><li>The southwest coast is the right coast this week. Trincomalee can be beautiful and then suddenly not.</li></ul>
+    </section>
+<section id="vietnam" class="place">
+      <p class="kicker">Mist, a lake, and karst hills</p>
+      <h2>Vietnam</h2>
+      <p class="lede">Hanoi &amp; Ninh Binh</p>
+      <figure class="hero">
+        <img src="photos/vietnam.jpg" alt="A wooden boat on still water among limestone karsts and rice paddies at sunrise" />
+        <figcaption>The right Vietnam for the last week of October. Cooler air, egg coffee, and a night in the rice fields.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹44,000–68,000</p><p>₹22,000–34,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹39,000–65,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹88,000–1,43,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>The lake, not the noise</h3><p class="where">Hanoi Old Quarter</p><div><p class="when">Morning</p><p>Land at Noi Bai. A booked car, about 45 minutes if the ring road behaves. Hotel on a side street, not above a karaoke bar.</p></div><div><p class="when">Afternoon</p><p>Hoan Kiem lake at walking speed. One egg coffee in a calm room upstairs, not the most photographed stool. If you are tired, the room wins. The lake will still be there.</p></div><div><p class="when">Evening</p><p>Bun cha and nem at a reserved table. Then the lake again, lit, and home. The Old Quarter gets loud. You do not have to.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>A class, not a checklist</h3><p class="where">Hanoi</p><div><p class="when">Morning</p><p>Temple of Literature early, before the groups. Skip train street. Standing in the path of a scooter for a photo is not romantic.</p></div><div><p class="when">Afternoon</p><p>A cooking class. You will eat what you make, so lunch is handled. Then a long coffee and nothing else.</p></div><div><p class="when">Evening</p><p>One modern Vietnamese dinner where the music is low. Walk back along the lake if the night is cool, which it often is, this month.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>Where the mountains start</h3><p class="where">Ninh Binh</p><div><p class="when">Morning</p><p>Car south. Trang An or Tam Coc by boat through the karst. Book the smaller boat. The caves and the paddies do the work. You just sit.</p></div><div><p class="when">Afternoon</p><p>Lunch, then the lodge. A hammock beats the climb up Mua Cave unless you both actively want the stairs. The view from a quiet field is already the photograph.</p></div><div><p class="when">Evening</p><p>Dinner at the lodge. Frogs, not traffic. This is the night you will talk about.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>Mist, then the airport</h3><p class="where">Ninh Binh to Hanoi</p><div><p class="when">Morning</p><p>Be outside for the mist, even for ten minutes, with tea. Then the car back. Do not plan a museum on the way.</p></div><div><p class="when">Afternoon</p><p>Noi Bai with a proper buffer. Two hours from the lodge door to the airport is the drive, plus airport time. An evening flight is the one that fits this shape.</p></div><div><p class="when">Evening</p><p>If you only have a morning flight, sleep in Hanoi on night 3 and make Ninh Binh a long day instead. The lodge night is worth moving the flight for.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Hanoi (HAN)</p><p>About 5 to 6 hours nonstop, when the direct is on sale</p><p>VietJet has flown this nonstop, and a mid-October round trip was listed near $250 a person. The last week of the month, with luggage, is safer planned at the upper half. If the direct is ugly, one stop via Bangkok still works. Fly into Noi Bai.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">E-visa before you fly</p><p class="num">₹5,000–10,000 for both of us</p><p>Apply on the official Vietnam e-visa site, not a random lookalike. Budget about ₹2,500–5,000 a person and a few days of processing. Passport validity and a blank page. Confirm the current rule the week you book.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights</strong><span class="num">₹16,000–28,000</span></div><p>Two in a quiet Old Quarter side street, one in a rice-field lodge in Ninh Binh.</p></li><li><div class="split"><strong>Car to the hills</strong><span class="num">₹8,000–12,000</span></div><p>Private car both ways, about two hours. Not a bus with a microphone.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹7,000–11,000</span></div><p>Bun cha, a reserved dinner, breakfast pho. Vietnam feeds you well for very little.</p></li><li><div class="split"><strong>Boat and a class</strong><span class="num">₹8,000–14,000</span></div><p>A small Trang An boat, just the two of you and a rower if you can get it, plus a cooking class in Hanoi.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>Hanoi and Ninh Binh are in their good months: clearer, cooler, green after the rains. Hoi An and Da Nang are the romantic postcard and also the typhoon coast right now. This plan does not send you there.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>The e-visa, then the flight, then the Ninh Binh lodge. The lodge is what makes Day 3 feel like a vacation rather than a day trip.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>October in Hanoi can be 22–28°C. A light layer for the morning mist in Ninh Binh. Rain is a passing thing, not a monsoon week.</li><li>Agree a taxi or Grab before you are tired. The Old Quarter has opinions about fares.</li><li>Cross streets slowly and steadily. They flow around you. Do not freeze and do not sprint.</li></ul>
+    </section>
+<section id="nepal" class="place">
+      <p class="kicker">The clearest month in the mountains</p>
+      <h2>Nepal</h2>
+      <p class="lede">Kathmandu Valley &amp; Nagarkot</p>
+      <figure class="hero">
+        <img src="photos/nepal.jpg" alt="Sunrise on the Himalayan range above a dark ridge" />
+        <figcaption>A short flight, no visa, and a sunrise you can actually see. October is when Nepal keeps its promise.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹30,000–52,000</p><p>₹15,000–26,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹36,000–61,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹66,000–1,13,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>Patan, not the crush</h3><p class="where">Lalitpur</p><div><p class="when">Morning</p><p>Land at KTM. A named driver. Hotel in a Patan courtyard, not Thamel. Thamel is useful and it is not rest.</p></div><div><p class="when">Afternoon</p><p>Patan Durbar Square in the late light. The palace, the courtyards, one museum if you are curious, then out. Juju dhau, the yogurt, from a shop the hotel names.</p></div><div><p class="when">Evening</p><p>A Newari dinner. Leave before you are full to the point of regret. The first night at altitude, even this modest, wants an early bed.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>One hill, then the car up</h3><p class="where">Swayambhu, then Nagarkot</p><div><p class="when">Morning</p><p>Swayambhunath early, before the tour buses. Walk the hill, watch the valley wake up, come down. You do not need a second monument today.</p></div><div><p class="when">Afternoon</p><p>Lunch in Patan. Then the car to Nagarkot, about an hour and a half if the road is kind. Check in while it is still light so the room’s window is a discovery, not a rumour.</p></div><div><p class="when">Evening</p><p>Tea on the terrace. If the peaks show, stay until they go dark. If cloud sits down, you still have the quiet, and morning may clear. Dinner at the lodge.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>Sunrise, then a town of clay</h3><p class="where">Nagarkot and Bhaktapur</p><div><p class="when">Morning</p><p>Set one alarm. The Himalaya at first light, in late October, is the thing people mean when they say Nepal. Breakfast after, not instead.</p></div><div><p class="when">Afternoon</p><p>Drive down via Bhaktapur. Durbar Square and Pottery Square. An hour and a half is enough. Then back to Patan.</p></div><div><p class="when">Evening</p><p>Nothing booked. Feet up. A good dinner nearby. You already did the rare thing this morning.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>A circle of lamps</h3><p class="where">Boudha, then the airport</p><div><p class="when">Morning</p><p>Boudhanath. Walk the kora once, clockwise, with everyone else and also at your own pace. Butter lamps if you want a quiet minute together. No guide required.</p></div><div><p class="when">Afternoon</p><p>Airport with a fat buffer. Security and the terminal works can eat a casual plan. A midday or afternoon flight is the comfortable shape.</p></div><div><p class="when">Evening</p><p>If you are flying late, do not add Kathmandu Durbar. The morning stupa was the goodbye.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Kathmandu (KTM)</p><p>About 2 hours 45 minutes, nonstop</p><p>IndiGo, Air India and Nepal Airlines. October is peak, so the low end is a lucky mid-week fare and the high end is what late booking often looks like. Tribhuvan airport is being rebuilt in phases. Give yourself extra time on the way home.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">No visa</p><p class="num">No fee in this plan</p><p>Indian citizens do not need a visa for Nepal. Fly with your passport. A voter ID is not a boarding pass.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights</strong><span class="num">₹16,000–28,000</span></div><p>Two in a Patan courtyard, one in Nagarkot facing the range. The view is the room.</p></li><li><div class="split"><strong>Car</strong><span class="num">₹10,000–16,000</span></div><p>Airport, the valley sights you actually want, and the Nagarkot run. Private, so you can leave when you are done.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹7,000–11,000</span></div><p>Newari dinner in Patan, momos when you want them, breakfast with the mountains.</p></li><li><div class="split"><strong>Entries</strong><span class="num">₹3,000–6,000</span></div><p>Durbar squares and the stupas. Patan’s ticket covers a lot if you walk slowly.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>Late October is the classic window: rains finished, peaks out, air clear. Dashain is usually over by now and Tihar sits closer to early November, so the valley is festive without being impossible. It can still be busy. The plan stays in Patan and Nagarkot, not a trek. Four days is not a trek.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>The flight, then the Nagarkot room with a mountain window. That night is the whole reason to choose Nepal.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Pokhara is the lake version of this vacation and it needs its own days. Do not try to staple it on. Come back for it.</li><li>Mornings are cool, middays are warm. A light jacket for the Nagarkot sunrise is the one thing you will be glad you packed.</li><li>Drink bottled or filtered water. The food, chosen with ordinary care, is a joy.</li></ul>
+    </section>
+<section id="uae" class="place">
+      <p class="kicker">A creek, a beach, a quiet dune</p>
+      <h2>UAE</h2>
+      <p class="lede">Dubai, slowly</p>
+      <figure class="hero">
+        <img src="photos/uae.jpg" alt="Two glasses on a linen cloth in the Dubai dunes at sunset" />
+        <figcaption>The easiest international hop on this list after Colombo. We will not try to see all of Dubai. We will swim, wander the old town, and watch the desert go gold.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹36,000–60,000</p><p>₹18,000–30,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹54,000–91,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹1,02,000–1,69,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>Swim first</h3><p class="where">Jumeirah</p><div><p class="when">Morning</p><p>A morning flight gets you to the hotel by early afternoon. Check in. The beach is the welcome, not the Burj Khalifa.</p></div><div><p class="when">Afternoon</p><p>Swim, sleep, swim again. Kite Beach if you want a walk. The sun is still serious. Hats, water, shade.</p></div><div><p class="when">Evening</p><p>A reservation where you can talk. The Marina promenade after, if your legs want it. No club, no fountain show unless you pass it and feel like stopping.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>The creek, before the heat</h3><p class="where">Al Fahidi and the souks</p><div><p class="when">Morning</p><p>Old Dubai while it is still kind. An abra across the creek, the lanes of Al Fahidi, the spice souk as a wander. The gold souq is for looking, unless you already know what you want.</p></div><div><p class="when">Afternoon</p><p>Back to the hotel before the sun argues. Pool. A spa hour if you book it. This is allowed to be the whole afternoon.</p></div><div><p class="when">Evening</p><p>Private desert sunset. Leave in the late afternoon, dune, photos that are actually of the two of you and the light, back for a late dinner in the city. Skip the mega-camp.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>The day with nothing to prove</h3><p class="where">The beach</p><div><p class="when">Morning</p><p>Breakfast late. Beach. A book. If you want one cultural hour, the Museum of the Future is the interesting one and it needs tickets. It is optional. The beach is not.</p></div><div><p class="when">Afternoon</p><p>Spa, properly. Book it before you travel so it is not ‘if we feel like it’ at 2pm, which is when nobody feels like deciding.</p></div><div><p class="when">Evening</p><p>One dinner you will remember the room of. Then an early night or a last walk on the sand. Both are correct.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>Leave generously</h3><p class="where">DXB</p><div><p class="when">Morning</p><p>A last swim if the flight allows. Dubai airport wants more time than you think. Three and a half hours before an international departure is comfortable, not fussy.</p></div><div><p class="when">Afternoon</p><p>Do not add Abu Dhabi and the Louvre. It is a wonderful day and it is a different trip. Four days cannot hold both without rushing her.</p></div><div><p class="when">Evening</p><p>If you fly at night, the morning beach stays. The Mall of the Emirates does not get a victory lap.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Dubai (DXB)</p><p>About 3 hours 15 minutes, many nonstops a day</p><p>Emirates, IndiGo, Flydubai, Air India. Sharjah on Air Arabia was about AED 830 return in mid-October, roughly ₹18,000–20,000. Dubai is usually a notch more, and the last week costs more than a random Tuesday. DXB is large. The car is worth booking.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">E-visa, arranged before you fly</p><p class="num">₹12,000–18,000 for both of us</p><p>Indian passport holders should budget about ₹6,000–9,000 each and apply before travel. Do not assume you can sort it at the airport. Use the official ICP or GDRFA channel, or the airline’s visa desk, and recheck the current product.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights</strong><span class="num">₹28,000–48,000</span></div><p>A real room in Jumeirah or on the Marina. Dubai hotels are the expensive line in this whole list.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹14,000–22,000</span></div><p>Breakfasts at the hotel or a cafe, one beautiful dinner, everything else ordinary and good.</p></li><li><div class="split"><strong>The desert, privately</strong><span class="num">₹8,000–14,000</span></div><p>A driver, a dune at sunset, and the two of you. Not the forty-person camp with a buffet line.</p></li><li><div class="split"><strong>Taxis and the abra</strong><span class="num">₹4,000–7,000</span></div><p>Metro is easy for some hops. Taxis when you are dressed for dinner. The creek boat is almost nothing.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>Late October is still warm, around the low thirties by day, and the evenings are finally pleasant. The winter rush and the winter prices have not fully arrived. It is hot for walking at noon. The plan hides from noon on purpose.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>Visas and flights together. Then the hotel, because a good room in late October disappears into conferences. The desert driver last, and still before you land.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Dress is relaxed on the beach and modest in the souks and the mosque areas. A cover-up in the bag solves it.</li><li>October is hot enough that midday plans outdoors fail. Mornings and evenings are the city.</li><li>Tipping is small and expected in restaurants. Taxis are metered. Confirm the desert driver is private before you pay.</li></ul>
+    </section>
+<section id="lakshadweep" class="place">
+      <p class="kicker">A lagoon, and almost nothing else</p>
+      <h2>Lakshadweep</h2>
+      <p class="lede">Agatti</p>
+      <figure class="hero">
+        <img src="photos/lakshadweep.jpg" alt="A shallow turquoise lagoon, white sand and coconut palms in Lakshadweep" />
+        <figcaption>The most ‘you deserve this’ water on the list. Also the most fragile to book: few flights, a permit, and a resort that is the whole island evening.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹56,000–96,000</p><p>₹28,000–48,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹48,000–91,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹1,04,000–1,87,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>Arrive, and stop trying</h3><p class="where">Agatti</p><div><p class="when">Morning</p><p>Mumbai to Kochi. A real layover, a calm lunch if you need it, then the small flight west. The lagoon appears before the runway does.</p></div><div><p class="when">Afternoon</p><p>Permit desk, resort boat or jeep, cottage. Swim. The water is the reason. There is no second activity hiding behind it.</p></div><div><p class="when">Evening</p><p>Dinner at the resort. The sky gets very dark and very full. Sit outside. Alcohol is restricted on the islands. The stars are not a consolation prize. They are the evening.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>The reef</h3><p class="where">The lagoon</p><div><p class="when">Morning</p><p>Snorkel the house reef with gear from the resort, and a life jacket if either of you wants one. Go out with their boatman. Do not touch anything that is alive, which is most of it.</p></div><div><p class="when">Afternoon</p><p>Sleep. Read. Swim again when you are not tired. The island is a few kilometres long. You are not missing a neighbourhood.</p></div><div><p class="when">Evening</p><p>The western beach for sunset. Then dinner. If a sandbank trip is running tomorrow and the sea is right, let the resort book it tonight.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>The sandbar, or the same perfect beach</h3><p class="where">Agatti lagoon</p><div><p class="when">Morning</p><p>If the boat is going, go. A sandbank in the middle of that water is slightly unreal. If the wind is up, the resort will cancel. Believe them. Swim at the cottage instead.</p></div><div><p class="when">Afternoon</p><p>A picnic they can pack, shade, and the two of you. Kayaks if you feel like it. No schedule that would make a cancellation feel like a loss.</p></div><div><p class="when">Evening</p><p>The same beach as last night. Repeating it is the correct use of a third night.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>One more swim, then Kochi</h3><p class="where">Agatti to Mumbai</p><div><p class="when">Morning</p><p>Swim before the bags. The flight back to Kochi is often early. The resort will tell you the real departure time, which is more useful than the ticket’s optimism.</p></div><div><p class="when">Afternoon</p><p>Only if the Kochi connection is genuinely long, eight hours or more: a quiet lunch in Fort Kochi, then the Mumbai flight. A short connection is not a sightseeing window. Sit, eat, board.</p></div><div><p class="when">Evening</p><p>Home, salt still in your hair if you are lucky.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Kochi (COK) → Agatti (AGX)</p><p>About 6 to 9 hours with the connection</p><p>There is no useful nonstop from Mumbai. One-way connecting fares were listed from about ₹14,000 in early October, and return seats are thin because the Kochi–Agatti leg is a small plane. Do not book a 45-minute layover. Two and a half hours at Kochi is the minimum that lets you breathe.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">Entry permit, not a visa</p><p class="num">No fee in this plan</p><p>For Indian citizens the permit is usually filed with the ticket or the resort. Carry passports. This plan assumes both of you are Indian citizens. Entry for foreign nationals is heavily restricted and is a different process entirely.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights, half board</strong><span class="num">₹40,000–75,000</span></div><p>An Agatti beach cottage for two, meals mostly at the resort because the island does not have a restaurant street. Bangaram and water villas can double this.</p></li><li><div class="split"><strong>Reef and sandbank</strong><span class="num">₹8,000–16,000</span></div><p>A half-day boat if the sea is calm. Snorkels from the resort. You do not stand on coral.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>The monsoon closure lifts through October and the lagoon settles. Late October is a real opening, not a compromise. Seas can still have a rough day. The resort will know before you do.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>The resort and the Agatti seats together. The flight is the scarce object. If the resort is still closed for monsoon repairs, pick another week rather than another island you cannot land on.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Dress modestly in the village. The beach at the resort is relaxed. The island is small and conservative, and guests are guests.</li><li>There is very little to buy and almost nowhere to eat outside the resort. Half board matters.</li><li>Pack reef-safe sunscreen, any medicine you might want, and a light shirt for the boat. The shop on Agatti is not a backup plan.</li></ul>
+    </section>
+<section id="andaman" class="place">
+      <p class="kicker">The beach that earns the flight</p>
+      <h2>Andaman</h2>
+      <p class="lede">Port Blair &amp; Swaraj Dweep</p>
+      <figure class="hero">
+        <img src="photos/andaman.jpg" alt="A long curve of pale sand and turquoise water at Radhanagar Beach" />
+        <figcaption>Havelock, which the maps now call Swaraj Dweep, and Radhanagar. A domestic trip that feels much further than it is.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹48,000–68,000</p><p>₹24,000–34,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹53,000–91,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹1,01,000–1,59,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>Arrive, eat, sleep early</h3><p class="where">Port Blair</p><div><p class="when">Morning</p><p>The flight. A cab to a hotel that can see the jetty or can reach it in fifteen minutes tomorrow. You have a boat to catch and it will not wait.</p></div><div><p class="when">Afternoon</p><p>Corbyn’s Cove if you want five minutes of sea today. Otherwise the room. Cellular Jail and the sound-and-light show are moving, and they are history, not a date. Go only if you both want that hour. It is all right to skip it.</p></div><div><p class="when">Evening</p><p>Seafood near the hotel. Bags packed for the ferry. Early night on purpose.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>The boat, then the beach</h3><p class="where">Swaraj Dweep</p><div><p class="when">Morning</p><p>Ferry. Sit outside if the spray is kind, inside if it is not. Makruzz is the calmer choice. A cab from the Havelock jetty to the resort.</p></div><div><p class="when">Afternoon</p><p>Lunch, then Radhanagar. The sand is long, the water goes from pale to deep blue, and the headland is forest. Swim. Stay for the colour at the end of the day.</p></div><div><p class="when">Evening</p><p>Dinner at a shack or the resort. There is nothing you are supposed to do after. That is the gift.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>Under the water, then the same sand</h3><p class="where">Elephant Beach and Radhanagar</p><div><p class="when">Morning</p><p>Boat to Elephant Beach. Snorkel the reef with the crew’s timing, not bravado. Back before you are cold or tired.</p></div><div><p class="when">Afternoon</p><p>Radhanagar again, or Kalapathar if you want a quieter curve of sand. Repeating Radhanagar is a good decision.</p></div><div><p class="when">Evening</p><p>A slightly nicer dinner. If tomorrow’s Mumbai flight is early, this is the night you are already back in Port Blair instead, and Day 2 carried the beach. Do not gamble the last ferry.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>Back across the water</h3><p class="where">Havelock to Port Blair to Mumbai</p><div><p class="when">Morning</p><p>The ferry you already hold tickets for. A cab is waiting on the Port Blair side because you arranged it. No market run.</p></div><div><p class="when">Afternoon</p><p>Airport. Domestic, but the island does not do ‘we’ll make it’. Two hours before departure once you are off the boat, which means the ferry has to have landed with room to spare.</p></div><div><p class="when">Evening</p><p>Only an evening flight gives you a calm lunch in Port Blair. If that is the ticket you hold, take the lunch. You earned the pause.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Port Blair (IXZ)</p><p>About 3 hours 30 minutes nonstop, or longer via Kolkata or Chennai</p><p>MakeMyTrip’s October calendar showed one-ways around ₹11,500–14,500 on several dates in the last week, so a return is honestly this band, not a bargain domestic hop. IndiGo and SpiceJet. Nonstops exist and sell out. The airport is Sri Vijaya Puram, still called Port Blair by everyone who is meeting you.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">No permit for these islands</p><p class="num">No fee in this plan</p><p>Indian citizens do not need a permit for Port Blair, Swaraj Dweep (Havelock) or Shaheed Dweep (Neil). Some tribal areas are closed. This plan does not go near them. Carry a photo ID as usual.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Ferries, both of you, both ways</strong><span class="num">₹8,000–14,000</span></div><p>Makruzz or Green Ocean, the comfier boats. About 1.5 to 2.5 hours. Book when you book the flights.</p></li><li><div class="split"><strong>Three nights</strong><span class="num">₹24,000–42,000</span></div><p>One near the Port Blair jetty, two on Havelock close enough to Radhanagar that sunset is a walk or a short ride.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹9,000–14,000</span></div><p>Fish, rice, cold drinks, one nicer dinner. The island is not cheap in the way you hope a beach will be.</p></li><li><div class="split"><strong>Snorkelling</strong><span class="num">₹7,000–12,000</span></div><p>A boat to Elephant Beach. Skip the steep jungle path with bags.</p></li><li><div class="split"><strong>Cabs</strong><span class="num">₹5,000–9,000</span></div><p>Airport, jetty, and the Havelock beaches. Agree the Havelock day rate at the jetty or through the resort.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>Late October is the start of the dry season. The sea is usually swimmable, a shower still passes, and the ferries are running. It is not the flat calm of January. It is already worth it, with one rule: never book the last ferry of a story you have to make.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>Flights and the two ferry legs in one sitting. Then the Havelock room. If the return flight to Mumbai is before 2pm, sleep the last night in Port Blair, not on the island.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Ferries cancel when the sea is rough. Travel insurance that understands weather, and a Port Blair hotel you can fall back to, is the adult version of this trip.</li><li>Cash still matters on Havelock. The resort card machine is not a personality you should rely on.</li><li>The sun is stronger than it looks over sand. Reef-safe sunscreen, and a shirt for shoulders at noon.</li></ul>
+    </section>
+<section id="oman" class="place">
+      <p class="kicker">A fort, a canyon, grilled fish</p>
+      <h2>Oman</h2>
+      <p class="lede">Muscat &amp; Wadi Shab</p>
+      <figure class="hero">
+        <img src="photos/oman.jpg" alt="Mutrah fort above the harbor in Muscat at dusk, mountains behind" />
+        <figcaption>A short flight into a country that still feels like a place, not a circuit. Mountains behind the corniche, and a swim inside a wadi.</figcaption>
+      </figure>
+      <div class="costs">
+        <article><p class="label">Flights for two</p><p class="figure">₹32,000–52,000</p><p>₹16,000–26,000 a person</p></article>
+        <article><p class="label">On the ground</p><p class="figure">₹48,000–79,000</p><p>Stay, food, getting around</p></article>
+        <article class="total"><p class="label">Rough total</p><p class="figure">₹89,000–1,45,000</p><p>Four days, three nights</p></article>
+      </div>
+      <div class="split-layout">
+        <div>
+          <h3 class="block-title">Four days</h3>
+          <p class="note">Paced for a vacation, not a checklist. If a flight lands late, protect the slow day and drop an outing.</p>
+          <ol class="days"><li class="day"><p class="kicker">Day 1</p><h3>The harbor at dusk</h3><p class="where">Mutrah</p><div><p class="when">Morning</p><p>If you leave Mumbai in the morning you are in Muscat for a late lunch. Collect the car only if you are not tired. A first-day taxi to the hotel is the kinder move. The car can start tomorrow.</p></div><div><p class="when">Afternoon</p><p>The room, a shower, the corniche when you feel human. Mountains sit right behind the city. That first view does a lot of the welcoming.</p></div><div><p class="when">Evening</p><p>Mutrah Souq as it wakes up for the night. Frankincense, not a shopping list. Then grilled fish on the corniche. Walk home.</p></div></li><li class="day"><p class="kicker">Day 2</p><h3>Marble, then the sea</h3><p class="where">The Grand Mosque and Qurum</p><div><p class="when">Morning</p><p>Sultan Qaboos Grand Mosque in visiting hours, usually the morning, closed to non-Muslims at prayer. Shoulders, ankles, and a headscarf for her. They will lend an abaya if you need one. Go anyway, it is extraordinarily quiet.</p></div><div><p class="when">Afternoon</p><p>Qurum beach. Swim. The afternoon is not for a second monument. If you want one small museum, Bait Al Zubair is enough and it is close.</p></div><div><p class="when">Evening</p><p>A dinner that is not rushed. Muscat goes to sleep earlier than Dubai. That suits this trip.</p></div></li><li class="day"><p class="kicker">Day 3</p><h3>Swim into the canyon</h3><p class="where">Wadi Shab and Bimmah</p><div><p class="when">Morning</p><p>Leave early. Wadi Shab is about an hour and three quarters south. A short boat across the first water, then you wade and swim between the walls to the cave with the waterfall. Wear shoes that can get wet. This is the day.</p></div><div><p class="when">Afternoon</p><p>Bimmah sinkhole on the way back, a green pool in the rock, a swim if you still want one. Then Muscat, slowly. Do not add Nizwa fort on the same day. The mountains after a wadi make people sharp-edged in a car.</p></div><div><p class="when">Evening</p><p>Shower, a long dinner, an early night. You used your bodies today. That was the idea.</p></div></li><li class="day"><p class="kicker">Day 4</p><h3>Coffee, then the airport</h3><p class="where">Mutrah to MCT</p><div><p class="when">Morning</p><p>Breakfast by the water. One last walk on the corniche. The airport is close to the city. You do not need to flee at dawn unless the flight says so.</p></div><div><p class="when">Afternoon</p><p>Return the car with fuel, and with time for a crack in the windscreen conversation you will probably not need. Three hours before departure is plenty here.</p></div><div><p class="when">Evening</p><p>If the flight is late, the Opera House gardens are a graceful extra hour. They are not a reason to cut the wadi short yesterday.</p></div></li></ol>
+        </div>
+        <aside>
+          <article class="card"><h3>The flight</h3><p class="strong">Mumbai (BOM) → Muscat (MCT)</p><p>About 2 hours 50 minutes, often nonstop</p><p>Oman Air, SalamAir, and sometimes IndiGo. The $152 round trip spotted for a 31 October departure is the hopeful floor. A four-day trip with checked bags, booked in mid-October, belongs in this full range. The airport is simple, which is part of the charm.</p></article>
+          <article class="card"><h3>Papers</h3><p class="strong">E-visa before you fly</p><p class="num">₹9,000–14,000 for both of us</p><p>Tourist e-visa through the Royal Oman Police. A short-stay option and a longer one both exist. Budget about ₹4,500–7,000 a person. Apply yourselves on the official site and carry the approval. Recheck the fee, it moves.</p></article>
+          <article class="card"><h3>What the days cost</h3><ul class="lines"><li><div class="split"><strong>Three nights</strong><span class="num">₹24,000–40,000</span></div><p>Mutrah if you want to walk to the souq, or Shati Al Qurum if the beach is the morning you want.</p></li><li><div class="split"><strong>A small rental car</strong><span class="num">₹9,000–15,000</span></div><p>Three days. The wadi is not a taxi day. Roads are good. You do not need a giant SUV for Wadi Shab.</p></li><li><div class="split"><strong>Food</strong><span class="num">₹12,000–18,000</span></div><p>Grilled hamour by the water, Indian food when you want a taste of home, coffee that is taken seriously.</p></li><li><div class="split"><strong>Entries</strong><span class="num">₹3,000–6,000</span></div><p>The Grand Mosque is free. Wadi Shab parking and a boat across the first pool are small. A fort if you feel like one.</p></li></ul></article>
+          <article class="card"><h3>Why this week</h3><p>Late October is one of Muscat’s good months. The brutal summer has eased, the sea is warm, and the wadis are open. A SalamAir return touching 31 October was listed around $152 a person. With a bag and a tighter four-day turn, plan above that, not on it.</p></article>
+          <article class="card accent"><h3>Book this first</h3><p>The e-visa and the flight. Then the car, from the airport, so Day 3 is not spent looking for one. A hotel in Mutrah last, and soon.</p></article>
+        </aside>
+      </div>
+      <h3 class="block-title">Before you say yes</h3>
+      <ul class="know"><li>Wadi Shab has slippery rock and deeper pools. Go with the daylight, and turn around if the current feels like more than fun.</li><li>Friday mornings are quieter in town and busier at the wadis. Go early either way.</li><li>The rial is strong. Cards work almost everywhere you will be. Small cash for the wadi boat and a roadside coffee.</li></ul>
+    </section>
+  </main>
+  <footer>
+    <p>Fares are planning ranges for two adults in economy, leaving Mumbai in the last week of October 2026, read from public snapshots in early and mid-October. They move every day. On-ground costs assume a comfortable couple’s trip: a good room, real dinners, one or two special things. Not a hostel, not a suite with a butler. Visas should be rechecked the week you book.</p>
+  </footer>
+</body>
+</html>
